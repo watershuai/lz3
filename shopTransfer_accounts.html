@@ -1,0 +1,266 @@
+<div class="head">
+  <a href="#!/user_center.html" class="back-btn">
+    <img src="img/left.png" />
+  </a>
+  我的蓝钻
+  <!--<a href="#!/transfer_accounts_record.html" class="last-url">
+		转账记录
+	</a>-->
+</div>
+<div class="containe-h">
+  <div class="my-price">
+    <p>蓝钻余额（个）</p>
+    <h2 id="money">0.00</h2>
+  </div>
+  <div class="real-div my-price-div">
+    <div class="input-group">
+      <label class="input-title">收钻地址</label>
+      <input type="text" class="login-input" placeholder="请输入对方收钻地址" id="walletAddress" />
+    </div>
+    <div class="input-group">
+      <label class="input-title">转出余额</label>
+      <input type="text" class="login-input" placeholder="请输入金额" id="outMoney" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')"/>
+    </div>
+    <!--<div class="input-group">
+      <label class="input-title">转出商户类型</label>
+      <div class="type">
+        <label><input name="Fruit" checked type="radio" value="1" /> 个人 </label>
+        <label><input name="Fruit" type="radio" value="2" />商户 </label> </div>
+    </div>-->
+    <div class="input-group">
+      <label class="input-title">转入商户类型</label>
+      <div class="type">
+        <label><input name="Fruit2" checked type="radio" value="1" />个人 </label>
+        <label><input name="Fruit2" type="radio" value="2" />商户 </label> </div>
+    </div>
+  </div>
+  <a class="money-btn" href="javascript:transferAccounts();">
+    转 出
+  </a>
+</div>
+</div>
+<!--浮动层-->
+<div class="ftc_wzsf">
+  <div class="srzfmm_box">
+    <div class="qsrzfmm_bt clear_wl">
+      <img src="img/xx_03.jpg" class="tx close fl">
+      <img src="img/user.png" class="tx fl" />
+      <span class="fl">请输入支付密码</span></div>
+    <div class="zfmmxx_shop">
+      <div class="mz" id="goodsName">测试商品</div>
+      <div class="zhifu_price" style="color:Green">
+        <font id="price">0.00</font><!--<small>钻</small>-->
+      </div>
+    </div>
+    <ul class="mm_box">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+  <div class="numb_box">
+    <div class="xiaq_tb">
+      <img src="img/jftc_14.jpg" height="10"></div>
+    <ul class="nub_ggg">
+      <li><a href="javascript:void(0);" class="zf_num">1</a></li>
+      <li><a href="javascript:void(0);" class="zj_x zf_num">2</a></li>
+      <li><a href="javascript:void(0);" class="zf_num">3</a></li>
+      <li><a href="javascript:void(0);" class="zf_num">4</a></li>
+      <li><a href="javascript:void(0);" class="zj_x zf_num">5</a></li>
+      <li><a href="javascript:void(0);" class="zf_num">6</a></li>
+      <li><a href="javascript:void(0);" class="zf_num">7</a></li>
+      <li><a href="javascript:void(0);" class="zj_x zf_num">8</a></li>
+      <li><a href="javascript:void(0);" class="zf_num">9</a></li>
+      <li><a href="javascript:void(0);" class="zf_empty">清空</a></li>
+      <li><a href="javascript:void(0);" class="zj_x zf_num">0</a></li>
+      <li><a href="javascript:void(0);" class="zf_del">删除</a></li>
+    </ul>
+  </div>
+  <div class="hbbj"></div>
+</div>
+<script>
+    function _get(url, data, callback, isLoading, content) {
+        data.token = localStorage.getItem("token"); //$.cookie('token');
+        var  temp4=$("#walletAddress").val();
+        if (temp4.length >11){
+            data.walletAddress= temp4
+        }else if (temp4.length == 11){
+            data.mobile=temp4
+        }else {
+            data.inviteCode=temp4
+        }
+        var loadingObj;
+        $.ajax({
+            type: "GET",
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: "json",
+            url: url,
+            data: data,
+            beforeSend: function () {
+                if (isLoading) {
+                    loadingObj = loading(content != undefined ? content : "加载中...")
+                };
+            },
+            success: function (data) {
+                typeof callback == 'function' && callback(data);
+            },
+            error: function (data) {
+                error("访问异常");
+            },
+            complete: function () {
+                // 此处关闭加载信息
+                if (isLoading) {
+                    loadingObj.close()
+                };
+            }
+        });
+    }
+
+    /**
+     * 重写post请求
+     */
+    function _post(url, data, callback, isLoading, content) {
+        data.token = localStorage.getItem("token"); //
+        var loadingObj;
+        var  temp5=$("#walletAddress").val();
+        if (temp5.length >11){
+            data.walletAddress= temp5
+        }else if (temp5.length == 11){
+            data.mobile=temp5
+        }else {
+            data.inviteCode=temp5
+        }
+        $.ajax({
+            type: "POST",
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: "json",
+            url: url,
+            data: data,
+            beforeSend: function () {
+                if (isLoading) {
+                    loadingObj = loading(content != undefined ? content : "加载中...")
+                };
+            },
+            success: function (data) {
+                typeof callback == 'function' && callback(data);
+            },
+            error: function (data) {
+                error("访问异常");
+            },
+            complete: function () {
+                // 此处关闭加载信息
+                if (isLoading) {
+                    loadingObj.close()
+                };
+            }
+        });
+    }
+
+  _post(shopUrls.shop_msg, {}, function (result) {
+      $("#money").html(changeTwoDecimal_f(result.userShopMoney.money));
+      /*if (result.code == 200) {
+          $("#money").html(changeTwoDecimal_f(result.userShopMoney.money));
+      } else if (result.code == 401) {
+          window.location.href = "#!/login.html";
+      } else {
+          notice(result.message);
+      }*/
+  })
+
+  /**
+   * 支付转账
+   */
+  function transferAccounts() {
+    //var val1 = $('input:radio[name=Fruit]:checked').val();
+    var val2 = $('input:radio[name=Fruit2]:checked').val();
+
+    if ($("#walletAddress").val() == "") {
+      notice("转账地址不能为空!");
+      return;
+    }
+    if ($("#outMoney").val() == "") {
+      notice("转账金额不能为空!");
+      return;
+    }
+    _get(Interf.getUserByWalletAddress, {
+      //walletAddress: $("#walletAddress").val(),
+    }, function (result) {
+      if (result.code == 200) {
+        $("#goodsName").html("转账交易,对方账号:" + result.data);
+        $("#price").html($("#money").val());
+        $(".ftc_wzsf").show();
+      } else if (result.code == 401) {
+        window.location.href = "#!/login.html";
+      } else {
+        notice(result.message);
+      }
+    }, true);
+  }
+
+
+  //关闭浮动
+  $(".close").click(function () {
+    $(".ftc_wzsf").hide();
+    $(".mm_box li").removeClass("mmdd");
+    $(".mm_box li").attr("data", "");
+    i = 0;
+  });
+  //数字显示隐藏
+  $(".xiaq_tb").click(function () {
+    $(".numb_box").slideUp(500);
+  });
+  $(".mm_box").click(function () {
+    $(".numb_box").slideDown(500);
+  });
+  //----
+  var i = 0;
+  $(".nub_ggg li .zf_num").click(function () {
+    if (i < 6) {
+      $(".mm_box li").eq(i).addClass("mmdd");
+      $(".mm_box li").eq(i).attr("data", $(this).text());
+      i++
+      if (i == 6) {
+        var pwd = "";
+        $(".mm_box li").each(function () {
+          pwd += $(this).attr("data");
+        });
+          var val2 = $('input:radio[name=Fruit2]:checked').val();
+        var data = {
+          //walletAddress: $("#walletAddress").val(),
+          outMonery: $("#outMoney").val(),
+            payType: "2",
+            userType: val2,
+          payPassword: pwd
+        }
+        _post(Interf.sendOutMonery, data, function (result) {
+          if (result.code == 200) {
+            success2("转账成功");
+            $(".ftc_wzsf").hide();
+            $(".mm_box li").removeClass("mmdd");
+            $(".mm_box li").attr("data", "");
+            i = 0;
+          } else {
+            notice(result.message);
+          }
+        }, true);
+      };
+    }
+  });
+
+  $(".nub_ggg li .zf_del").click(function () {
+    if (i > 0) {
+      i--
+      $(".mm_box li").eq(i).removeClass("mmdd");
+      $(".mm_box li").eq(i).attr("data", "");
+    }
+  });
+
+  $(".nub_ggg li .zf_empty").click(function () {
+    $(".mm_box li").removeClass("mmdd");
+    $(".mm_box li").attr("data", "");
+    i = 0;
+  });
+</script>

@@ -1,0 +1,195 @@
+<div class="head">
+	<a href="#!/user_center.html" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	积分记录
+</div>
+<div class="containe-h" id="wrapper">
+	<div id="minirefresh" class="minirefresh-wrap">
+        <div class="minirefresh-scroll">
+            <ul class="message-grid" id="scoreList">
+
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+	var pageNo = 1, pageSize = 10,pageData = 0;
+	requestDelayTime = 600;
+    
+    // 引入任何一个主题后，都会有一个 MiniRefresh 全局变量
+	var miniRefresh = new MiniRefresh({
+	    container: '#minirefresh',
+	    down: {
+	        callback: function() {
+	            // 下拉事件
+	             setTimeout(function() {
+                    // 每次下拉刷新后，上拉的状态会被自动重置
+                    Refresh();
+                     if(pageNo == 1){
+					 	miniRefresh.endDownLoading();
+					 }
+                    miniRefresh.endUpLoading();
+                }, requestDelayTime);
+	        }
+	    },
+	    up: {
+	        callback: function() {
+	             setTimeout(function() {
+                	Load();
+                	 if(pageNo == 1){
+					 	miniRefresh.endDownLoading();
+					 }
+				 	miniRefresh.endUpLoading(pageData == 0 ? true : false);
+                }, requestDelayTime);
+	        }
+	    }
+	});
+	
+	getUserScoreRecord();
+    /**
+     * 获取交易记录
+	 */
+   function getUserScoreRecord() {
+		_get(Interf.getUserScoreRecord,{pageNo:pageNo,pageSize:pageSize},function(result){
+		   if(result.code == 200){
+				 var html = "";
+				 pageData = result.data.length;
+				 
+				 if(pageNo == 1){
+				 		$("#scoreList").empty();
+				 	}
+				 
+				 $.each(result.data,function (i,j) {
+				 	var score = j.score;
+					if(score > 0){
+						score = "+" + score;
+					}
+				 	
+					html +=	'<li><div class="message-icon">' +
+									'<img src="img/trade/trade' + j.type + '.png" /></div>' +
+									'<div class="message-info"><div class="message-title">' + 
+									'<span class="price">' + score + '</span>' +
+									'<span class="message-time">' + j.createDate + '</span></div>' +
+									'<div class="message-content">' + j.remarks + '</div></div></li>';
+				 });
+				 $("#scoreList").append(html);
+		   } else if(result.code == 401){
+			  window.location.href = "#!/login.html"; 
+		   } else {
+			  notice(result.message);
+		   }			   
+		},true);
+   }
+	
+	function Refresh(){
+		pageNo = 1;
+		getUserScoreRecord();
+	}
+	
+	function Load(){
+		pageNo += 1;
+		getUserScoreRecord();
+	}
+	
+	/*var pageNo = 1,
+		pageSize = 15;
+	_get(Interf.getUserTradeRecord, {
+		pageNo: pageNo,
+		pageSize: pageSize
+	}, function(result) {
+		if(result.code == 200) {
+			$(".dui-log-list").empty();
+			var html = "";
+			$.each(result.data, function(i, j) {
+				var money = j.money;
+				
+				if(money > 0){
+							money = "+" + money;
+						}
+				
+				html += '	<li class="list-detail">' + j.content +
+					'	<span class="detail-time">' + j.createTime + '</span>' +
+					'	<span class="detail-z">' + money + '</span>                  ' +
+					'</li>                                                ';
+			});
+			$(".dui-log-list").append(html);
+		} else if(result.code == 401) {
+			window.location.href = "#!/login.html";
+		} else {
+			notice(result.message);
+		}
+	});
+
+	refresher.init({
+		id: "wrapper",
+		pullDownAction: Refresh,
+		pullUpAction: Load
+	});
+	var generatedCount = 0;
+
+	function Refresh() {
+		pageNo = 1;
+		setTimeout(function() {
+			_get(Interf.getUserTradeRecord, {
+				pageNo: pageNo,
+				pageSize: pageSize
+			}, function(result) {
+				if(result.code == 200) {
+					$(".dui-log-list").empty();
+					var html = "";
+					$.each(result.data, function(i, j) {
+						var money = j.money;
+						
+						if(money > 0){
+							money = "+" + money;
+						}
+						
+						html += '	<li class="list-detail">' + j.content +
+							'	<span class="detail-time">' + j.createTime + '</span>' +
+							'	<span class="detail-z">' + money + '</span>                  ' +
+							'</li>                                                ';
+					});
+					$(".dui-log-list").append(html);
+					myScroll.refresh();
+				} else if(result.code == 401) {
+					window.location.href = "#!/login.html";
+				} else {
+					notice(result.message);
+				}
+			});
+		}, 1000);
+	}
+	
+	function Load() {
+		pageNo += 1;
+		setTimeout(function() {
+			_get(Interf.getUserTradeRecord, {
+				pageNo: pageNo,
+				pageSize: pageSize
+			}, function(result) {
+				if(result.code == 200) {
+					var html = "";
+					$.each(result.data, function(i, j) {
+						var money = j.money;
+						
+						if(money > 0){
+							money = "+" + money;
+						}
+						
+						html += '	<li class="list-detail">' + j.content +
+							'	<span class="detail-time">' + j.createTime + '</span>' +
+							'	<span class="detail-z">' + money + '</span>                  ' +
+							'</li>                                                ';
+					});
+					$(".dui-log-list").append(html);
+					myScroll.refresh();
+				} else if(result.code == 401) {
+					window.location.href = "#!/login.html";
+				} else {
+					notice(result.message);
+				}
+			});
+		}, 1000);
+	}*/
+</script>

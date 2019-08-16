@@ -1,0 +1,126 @@
+<div class="head">
+	<a href="#!/user_center.html" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	我的团队
+</div>
+<div class="containe-h">
+	<div class="my-price">
+		<!--<p>团队动力</p>
+		<h2 id="countExploitRate">0.00</h2>-->
+		<p>佣金总额</p>
+		<h2 id="countMoney">0.00</h2>
+		<p style="    margin-left: 16rem; margin-top: -7rem;">团队人数</p>
+		<h2 id="countUser" style="    margin-left: 16rem;">0.00</h2>
+		<div class="price-div-row"></div>
+		<div class="price-div-bg"></div>
+		<div class="price-div">
+			推荐人ID <span id="parentInviteCode"></span>
+		</div>
+	</div>
+	<!--<ul class="tool-text-menu">
+		&lt;!&ndash;<li>
+			<p class="menu-title">一级人数</p>
+			<p class="menu-num" id="fNum">0</p>
+		</li>
+		<li>
+			<p class="menu-title">二级人数</p>
+			<p class="menu-num" id="sNum">3</p>
+		</li>&ndash;&gt;
+		<li>
+			<p class="menu-title">团队人数</p>
+			<p class="menu-num" id="countUser">3</p>
+		</li>
+		<li>
+			<p class="menu-title">分享佣金</p>
+			<p class="menu-num" id="movementMoney">0.00</p>
+		</li>
+		&lt;!&ndash;<li>
+			<p class="menu-title">交易佣金</p>
+			<p class="menu-num" id="dealMoney">0.00</p>
+		</li>&ndash;&gt;
+		<li>
+			<p class="menu-title">佣金总额</p>
+			<p class="menu-num" id="countMoney">0.00</p>
+		</li>
+	</ul>-->
+
+	<div class="team-nav">
+		<ul>
+			<li onclick="dealMoney(this);" class="selected"  style="width: 100%"  id="dealMoneys"><span>分享佣金</span></li>
+			<!--<li onclick="shareMoney(this);" id="shareMoneys"><span>交易佣金</span></li>-->
+		</ul>
+	</div>
+	<div class="team-list" id="content1">
+	</div>
+	<div class="team-list" id="content" style="display: none;">
+		<!--<div class="list-detail">
+			<img src="img/zuan.png" />123****958<span>+7</span>
+		</div>
+		<div class="list-detail">
+			<img src="img/zuan.png" />123****958<span>+2</span>
+		</div>
+		<div class="list-detail">
+			<img src="img/zuan.png" />123****958<span>+2</span>
+		</div>
+		<div class="list-detail">
+			<img src="img/zuan.png" />123****958<span>+2</span>
+		</div>
+		<div class="list-detail">
+			<img src="img/zuan.png" />123****958<span>+2</span>
+		</div>
+		<div class="list-detail">
+			<img src="img/zuan.png" />123****958<span>+2</span>
+		</div>
+		<div class="list-detail">
+			<img src="img/zuan.png" />123****958<span>+2</span>
+		</div>-->
+	</div>
+</div>
+<script type="text/javascript">
+	_get(Interf.getMyteam,{},function(result){
+	   if(result.code == 200){
+		  $("#parentInviteCode").text(result.data.user.parentInviteCode != null &&result.data.user.parentInviteCode != ""?result.data.user.parentInviteCode:"暂无");//父类邀请码
+			$("#dealMoney").text(result.data.teamTradesMoney);
+			$("#shareMoney").text(result.data.teamTradesMoney1);
+			$("#countExploitRate").text(result.data.user.countExploitRate);
+			$("#countMoney").text(result.data.countMoney);
+			$("#countUser").text(result.data.inviteUserCount);
+			$("#fNum").text(result.data.fNum);
+			$("#sNum").text(result.data.sNum);
+           	$("#movementMoney").text(result.data.shareMoney);
+			$.each(result.data.myTrades,function(){
+				$("#content").append('<div class="list-detail">' +
+			'<img src="img/zuan.png" />' + this.inviteCode + '<span>+' + this.money + '</span>' +
+			'<p>' + this.countTime + '</p></div>');
+		});
+		
+			$.each(result.data.myTrades1,function(){
+					$("#content1").append('<div class="list-detail">' +
+				'<img src="img/zuan.png" />' + this.inviteCode + '<span>+' + this.money + '</span>' +
+			'<p>' + this.countTime + '</p></div>');
+			});
+	   } else if(result.code == 401){
+		  window.location.href = "#!/login.html"; 
+	   } else {
+		  notice(result.message);
+	   }			   
+	});
+	
+	function shareMoney(){
+		$("#content").show();
+		$("#content1").hide();
+		
+		$("#shareMoneys").addClass("selected");
+		$("#dealMoneys").removeClass("selected");
+	}
+		
+	function dealMoney(){
+		$("#content").hide();
+		$("#content1").show();
+		
+		
+		$("#shareMoneys").removeClass("selected");
+		$("#dealMoneys").addClass("selected");
+	}
+</script>

@@ -1,0 +1,190 @@
+<div class="containe">
+	<section class="swiper-container top-nav" style="width:100%;height:29px;position:fixed;top:0;left:0;">
+	    <div class="swiper-wrapper" id="categoryList" >
+	        <!--<div class="swiper-slide active">衣服</div>
+	        <div class="swiper-slide">箱包</div>
+	        <div class="swiper-slide">烟酒</div>
+	        <div class="swiper-slide">鞋子</div>
+	        <div class="swiper-slide">奢侈品</div>
+	        <div class="swiper-slide">首饰</div>
+	        <div class="swiper-slide">化妆品</div>
+	        <div class="swiper-slide">眼镜</div>-->
+	        <!--<div class="nav_line"></div>-->
+	    </div>
+	</section>
+	<img src="img/jifen-banner.jpg" style="width:100%;margin-top: 30px" />
+	<ul class="item-cell-list" id="categoryItemList">
+		<!--<li>
+			<div class="item-pic">
+				<img src="img/item/item1.jpg" />
+			</div>
+			<div class="item-info">
+				<p class="item-title">合金拖马斯小火车套装</p>
+				<p class="item-price">¥
+					<span class="item-price-num">9999..00</span>
+					<span class="item-score">送9999积分</span>
+				</p>
+			</div>
+		</li>
+		<li>
+			<div class="item-pic">
+				<img src="img/item/item2.jpg" />
+			</div>
+			<div class="item-info">
+				<p class="item-title">上汽大众全新途观</p>
+				<p class="item-price">¥
+					<span class="item-price-num">1000.00</span>
+					<span class="item-score">送1000积分</span>
+				</p>
+			</div>
+		</li>
+		<li>
+			<div class="item-pic">
+				<img src="img/item/item3.jpg" />
+			</div>
+			<div class="item-info">
+				<p class="item-title">上汽大众全新途观</p>
+				<p class="item-price">¥
+					<span class="item-price-num">1000.00</span>
+					<span class="item-score">送1000积分</span>
+				</p>
+			</div>
+		</li>
+		<li>
+			<div class="item-pic">
+				<img src="img/item/item1.jpg" />
+			</div>
+			<div class="item-info">
+				<p class="item-title">合金拖马斯小火车套装</p>
+				<p class="item-price">¥
+					<span class="item-price-num">9999.00</span>
+					<span class="item-score">送9999积分</span>
+				</p>
+			</div>
+		</li>
+		<li>
+			<div class="item-pic">
+				<img src="img/item/item2.jpg" />
+			</div>
+			<div class="item-info">
+				<p class="item-title">上汽大众全新途观</p>
+				<p class="item-price">¥
+					<span class="item-price-num">1000.00</span>
+					<span class="item-score">送1000积分</span>
+				</p>
+			</div>
+		</li>
+		<li>
+			<div class="item-pic">
+				<img src="img/item/item3.jpg" />
+			</div>
+			<div class="item-info">
+				<p class="item-title">上汽大众全新途观</p>
+				<p class="item-price">¥
+					<span class="item-price-num">1000.00</span>
+					<span class="item-score">送1000积分</span>
+				</p>
+			</div>
+		</li>-->
+	</ul>
+</div>
+<ul class="bottom-nav">
+		<a href="#!/home.html">
+			<li>
+				<img src="img/icon/home.png" />
+				<p>首页</p>
+			</li>
+		</a>
+		<a href="#!/shop/shop_index.html">
+			<li class="active">
+				<img src="img/icon/shopfill.png" />
+			<p>商城</p>
+			</li>
+		</a>
+		<a href="#!/my_message.html">
+			<li>
+				<img src="img/icon/mark.png" />
+				<p>消息</p>
+			</li>
+		</a>
+		<a href="#!/user_center.html">
+			<li>
+				<img src="img/icon/my_light.png" />
+				<p>我的</p>
+			</li>
+		</a>
+</ul>
+<style type="text/css">
+	.swiper-container>.swiper-wrapper>.active>span{
+		border-bottom: 0.2rem solid #dc1079;
+		color: #dc1b9e;
+		padding-bottom: 3px;
+	}
+</style>
+<script>
+    $(document).ready(function () {
+        getAllShowShopCategory();
+    })
+/**
+ * 获取用户信息
+ */
+   function getAllShowShopCategory() {
+		_get(shopUrls.getAllShowShopCategory,{type:"1"},function(result){
+		   if(result.code == 200){
+				 var html = "";
+			 $.each(result.data,function (i,j) {
+				 if(i == 0){
+					 html +=	'<div class="swiper-slide active" data-id="' + j.id + '"><span>' + j.name + '</span></div>';
+					 getShopItemInfoByCategoryId( j.id);
+				 }else{
+					 html +=	'<div class="swiper-slide" data-id="' + j.id + '"><span>' + j.name + '</span></div>';
+				 }
+			 });
+			 // $("#categoryList").append(html);
+			 
+			new Swiper('.top-nav', {slidesPerView: 5});
+		    
+		    $(document).ready(function(){
+		        $('.swiper-container>.swiper-wrapper>.swiper-slide').click(function(){
+		            //var index = $(".swiper-wrapper>.swiper-slide").index(this);
+					//var width = window.innerWidth;
+					//$(".nav_line").animate({left:(index * width/5)},200);
+					$(this).addClass("active").siblings().removeClass("active"); //切换选中的按钮高亮状态
+					//点击事件
+					getShopItemInfoByCategoryId($(this).data("id"));
+		        });
+		    });
+	   } else if(result.code == 401){
+		  window.location.href = "#!/login.html"; 
+		   } else {
+			  notice(result.message);
+		   }			   
+		},true);
+   }
+   
+   function getShopItemInfoByCategoryId(categoryId){
+   		_get(shopUrls.getShopItemInfoByCategoryId,{categoryId:categoryId,type:"1"},function(result){
+		   if(result.code == 200){
+				 var html = "";
+				 $.each(result.data,function (i,j) {
+					html +=	'<li onclick="showShopItemInfo(this)" data-id="' + j.id + '">' +
+									'<div class="item-pic"><img src="' + serverUrl + j.mainPic + '" />' +
+									'</div><div class="item-info"><p class="item-title">' + j.name +
+									'</p><p class="item-price">¥<span class="item-price-num">' + changeTwoDecimal_f(j.price) + '</span>' +
+									'<span class="item-score">送' +j.score + '积分</span></p></div></li>';
+				 });
+				 $("#categoryItemList").html(html);
+		   } else if(result.code == 401){
+			  window.location.href = "#!/login.html"; 
+		   } else {
+			  notice(result.message);
+		   }			   
+		},true);
+   }
+   
+   //展示项品详情
+   function showShopItemInfo(obj){
+   		itemInfoId = $(obj).data("id");
+   		window.location.href = "#!/shop/item_info.html"; 
+   }
+</script>

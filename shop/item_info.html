@@ -1,0 +1,92 @@
+<div class="head">
+    <a href="#!/shop/shop_index.html" class="back-btn">
+        <img src="img/left.png"/>
+    </a>
+    蓝钻网
+</div>
+<div class="containe-hf">
+    <div class="swiper-container swiper-item-banner" data-space-between='10' data-pagination='.swiper-pagination'
+         data-autoplay="1000">
+        <!--图片-->
+        <div class="swiper-wrapper" id="showPic">
+            <!--<div class="swiper-slide"><img src="img/item/item1.jpg"></div>
+            <div class="swiper-slide"><img src="img/item/item2.jpg"></div>
+            <div class="swiper-slide"><img src="img/item/item3.jpg"></div>-->
+        </div>
+        <!--分页器-->
+        <div class="swiper-pagination swiper-pagination-bullets"></div>
+    </div>
+    <div class="goods-info">
+        <div class="goods-title" id="name">
+        </div>
+        <div class="goods-price">
+            <span class="goods-paytype">￥</span>
+            <span class="goods-price-num" id="price">0.00</span>
+        </div>
+    </div>
+    <div class="send-score">
+        <span class="send-score-title">积分</span>购买赠送<span class="score" id="score">0积分</span>
+    </div>
+    <div class="goods-common">
+        <div class="goods-common-title"><span>商品详情</span></div>
+    </div>
+</div>
+<a href="#!/shop/confirm_order.html" class="bottom-submit" data-id="" id="id">立即购买</a>
+<script>
+    $(function () {
+        showShopItemInfo();
+    });
+
+    /**
+     * 显示商品详情
+     */
+    function showShopItemInfo() {
+        console.log(itemInfoId);
+        if(itemInfoId == undefined){
+            return;
+        }
+        _get(shopUrls.showShopItemInfo, {id: itemInfoId}, function (result) {
+            if (result.code == 200) {
+                $("#name").html(result.data.name);
+                $("#price").html(changeTwoDecimal_f(result.data.price));
+                $("#score").html(result.data.score + "积分");
+                $("#id").data("id", result.data.id);
+
+                //根据支付类型控制展示
+                if(result.data.payType === 2){
+                    $('.goods-price .goods-paytype').text("")
+                            .append('<img src="img/zuan.png" style="width: 12px; height: 9px;"/>');
+                    $('.head a').attr('href', '#!/shop/shop_index_diamond.html');
+                    $('a.bottom-submit').text("立即兑换");
+                    $('.send-score').hide();
+                }
+
+                if (result.data.common != null) {
+                    var commons = (result.data.common).split("|");
+//                    var html = "";
+//                    for (var i = 0; i < commons.length; i++) {
+//                        html += '<img src=" ' + serverUrl + commons[i] + '"/>'
+//                    }
+                    $('.goods-common').append(commons);
+                }
+
+                $("#showPic").append('<div class="swiper-slide"><img src="' + serverUrl + result.data.mainPic + '"></div>');
+                var pics = result.data.showPic.split("|");
+                $.each(pics, function () {
+                    $("#showPic").append('<div class="swiper-slide"><img src="' + serverUrl + this + '"></div>');
+                });
+
+                var swiper = new Swiper('.swiper-container', {
+                    pagination: {
+                        el: '.swiper-pagination',
+                        type: "fraction"
+                    },
+                });
+            } else if (result.code == 401) {
+                window.location.href = "#!/login.html";
+            } else {
+                notice(result.message);
+            }
+        }, true);
+    }
+</script>

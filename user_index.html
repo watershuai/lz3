@@ -1,0 +1,83 @@
+<div class="head">
+	<a href="#!/home.html" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	积分收益
+</div>
+<div class="index-bg" id="pointsplan">
+	<div class="index-div">
+		<div id='diamond_none' class='diamond-div diamond-none arrow'>
+			<div v-for="package in packages">
+				{{package.name}}&nbsp;&nbsp;&nbsp;&nbsp;
+				<span @click="receive(package.xingzhexqMoney, package.runTime, package.id, package.settlementTime)">
+					点击领取当日蓝钻
+				</span>
+			</div>
+			<div>累计获取蓝钻：{{totalMoney | twoDecimal}}</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var vm = new Vue({
+		el:"#pointsplan",
+		data:{
+			packages:{}, //套餐
+			totalMoney: 0.000000
+		},
+		methods:{
+			initPlan:function(){
+				//获取加入的积分计划
+				_get(Interf.getMyPointPlan,{},function(result){
+					if(result.code == 200 && result.data.list.length > 0){
+						vm.packages = result.data.list;
+						vm.totalMoney = result.data.totalMoney;
+						console.log(vm.totalMoney);
+					}else{
+						notice("数据加载异常");
+					}
+				}, false)
+			},
+			receive:function(money, runTime, id, getTime){
+				var nowDate = DateFormat.getDateStart(new Date());
+				var getDate = DateFormat.getDateStart(new Date(getTime));
+				if(DateFormat.compareDate(nowDate, getDate) === 0){
+					notice("您今天已经领取过了，明天再来吧");
+					return;
+				}
+				_post(Interf.updateMyMoney, {id:id}, function(result){
+					if(result.code === 200){
+						vm.initPlan();
+					}else{
+						notice("领取失败，请稍后再试！");
+					}
+				}, true)
+
+			}
+		}
+	})
+
+	$(function(){
+		vm.initPlan();
+	});
+
+	//Vue过滤器，用于将数值格式化为2位小数
+	Vue.filter('twoDecimal', function(val) {
+		console.log("======="+val);
+		val = val.toString().replace(/\$|\,/g,'');
+		if(isNaN(val)) {
+			val = "0";
+		}
+		var sign = (val == (val = Math.abs(val)));
+		val = Math.floor(val*100+0.50000000001);
+		var cents = val%100;
+		val = Math.floor(val/100).toString();
+		if(cents<10) {
+			cents = "0" + cents
+		}
+		for (var i = 0; i < Math.floor((val.length-(1+i))/3); i++) {
+			val = val.substring(0,val.length-(4*i+3))+',' + val.substring(val.length-(4*i+3));
+		}
+		return (((sign)?'':'-') + val + '.' + cents);
+	})
+</script>

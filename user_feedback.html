@@ -1,0 +1,35 @@
+<div class="head">
+	<a href="#!/user_info.html" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	联系我们
+</div>
+<div class="con">
+	<div class="uppas-div">
+		<textarea placeholder="请输入意见" id="content"></textarea>
+		<div class="cogs-foot">
+			<a class="card-btn" href="javascript:sendContent();">
+				确 定
+			</a>
+		</div>
+	</div>
+	<div class="tel-div">
+		<img src="img/qq.png" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;98775626
+	</div>
+	<div class="tel-div">
+		<img src="img/wx.png" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;98775626
+	</div>
+</div>
+<script>
+    function sendContent () {
+		// 发布意见反馈
+		_post(Interf.saveContact,{content:$("#content").val()},function(result){
+		   if(result.code == 200){
+				success2("反馈成功");
+				window.location.href = "#!/user_info.html"; 
+		   } else{
+				notice(result.message);
+		   }			   
+		},true);
+	}
+</script>

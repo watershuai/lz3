@@ -1,0 +1,39 @@
+<div class="head">
+	<a href="javascript:window.history.back()" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	公告详情
+</div>
+<div class="containe-h">
+	<div class="notice-div">
+		<div class="notice-title">
+			
+		</div>
+		<div class="notice-content">
+			
+		</div>
+		<div class="notice-time">
+			<span >阅读：<font id="readNum"></font></span>
+			<span id="createDate"></span>
+		</div>
+	</div>
+</div>
+<script>
+
+    /**
+	  * 获取公告详情
+	  */
+	var data = {id:noticeId};
+	_get(Interf.getNoticeInfo,data,function(result){
+	   if(result.code == 200){
+	      $(".notice-title").html(result.data.title);
+		  $("#createDate").html(result.data.createDate);
+		  $("#readNum").html(result.data.readNum);
+		  $(".notice-content").html(result.data.content);
+	   } else if(result.code == 401){
+		  window.location.href = "#!/login.html"; 
+	   } else {
+		  notice(result.message);
+	   }			   
+	});
+</script>

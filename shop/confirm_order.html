@@ -1,0 +1,197 @@
+<div class="head">
+  <a href="#!/shop/item_info.html" class="back-btn">
+    <img src="img/left.png" />
+  </a>
+  确认订单
+</div>
+<div class="containe-hf">
+  <a href="#!/shop/address_manage.html" class="add-address">
+    <img src="img/icon/addition_fill.png" />选择收货地址
+  </a>
+  <div class="address-info" id="addressInfo" data-id="">
+    <!--<div class="address-info-group">
+            <p>收货人：<span>李天龙</span></p>
+            <p>电话：<span>15571052563</span></p>
+        </div>
+        <div class="address-info-group">
+            地址：<span>青龙省白虎市玄武区凤凰大道301号</span>
+        </div>-->
+  </div>
+  <div class="order-info">
+    <div class="order-title">行者商城</div>
+    <div class="order-item-info">
+      <div class="item-pic">
+        <img src="img/item/item1.jpg" id="itemPic" />
+      </div>
+      <div class="item-info" id="itemId" data-id="">
+        <p class="item-title" id="name">大号合金拖马斯小火车套装轨道惯性电动汽车男孩玩具</p>
+        <p class="item-num">数量：<span id="num">1</span></p>
+        <p class="item-price">售价：<span id="price">¥0.00</span></p>
+      </div>
+    </div>
+    <div class="send-score">
+      <span class="send-score-title">积分</span>购买赠送<span class="score" id="socress"></span>
+    </div>
+  </div>
+</div>
+<div class="order-submit-group">
+  <div class="order-total">合计：<span class="price" id="count">¥0.00</span></div>
+  <a href="javascript:void(0)" onclick="buyItem()" class="order-submit-btn">提交订单</a>
+</div>
+<script>
+  $(function () {
+    //验证当前是否存在地址数据
+    if (addressId == "" || addressId == null) {
+      //获取用户信息，并设置默认地址ID
+      _get(Interf.getUser, {}, function (result) {
+
+        if (result.code == 200) {
+          if (result.data.dfAddressId != null && result.data.dfAddressId != "") {
+            addressId = result.data.dfAddressId;
+            getAddress();
+          } else {
+            $("#addressInfo").hide();
+          }
+        } else if (result.code == 401) {
+          window.location.href = "#!/login.html";
+        } else {
+          notice(result.message);
+        }
+      });
+    } else {
+      getAddress();
+    }
+
+    showShopItemInfo();
+  });
+
+  /**
+   * 获取置顶的商品列表
+   */
+  function showShopItemInfo() {
+    if (itemInfoId == undefined) {
+      return;
+    }
+    var data = {
+      id: itemInfoId
+    };
+    _get(shopUrls.showShopItemInfo, data, function (result) {
+      if (result.code == 200) {
+        $("#name").html(result.data.name);
+        $("#price").html(changeTwoDecimal_f(result.data.price));
+        $("#socress").html(result.data.score + "积分");
+        $("#itemId").data("id", result.data.id);
+        $("#common").attr("src", serverUrl + result.data.common);
+        $("#count").html("¥" + changeTwoDecimal_f(result.data.price * $("#num").html()));
+        $("#itemPic").attr("src", serverUrl + result.data.mainPic);
+
+        //根据支付类型控制展示
+        if (result.data.payType === 2) {
+          $('.send-score').hide();
+          $("#count").html('<img src="img/zuan.png" style="width: 12px; height: 9px; padding-right: 2px;"/>' +
+            changeTwoDecimal_f(result.data.price * $("#num").html()));
+        }
+
+      } else if (result.code == 401) {
+        window.location.href = "#!/login.html";
+      } else {
+        notice(result.message);
+      }
+    }, true);
+  }
+
+  function getAddress() {
+    var data = {
+      id: addressId
+    };
+    _get(Interf.getAddress, data, function (result) {
+      if (result.code == 200) {
+        $("#addressInfo").append(
+          '<div class="address-info-group">' +
+          '<p>收货人：<span>' + result.data.linkName + '</span></p>' +
+          '<p>电话：<span>' + result.data.linkPhone + '</span></p></div>' +
+          '<div class="address-info-group">' +
+          '地址：<span>' + result.data.linkCity + " " + result.data.linkStreet + '</span></div>');
+
+        $("#addressInfo").data("id", addressId);
+      } else if (result.code == 401) {
+        window.location.href = "#!/login.html";
+      } else {
+        notice(result.message);
+      }
+    });
+  }
+
+  /**
+   * 购买商品
+   */
+  function buyItem() {
+    var itemId = $("#itemId").data("id");
+    var price = $("#price").html();
+    var itemNum = $("#num").html();
+    var addressId = $("#addressInfo").data("id");
+
+    if (addressId == "" || addressId == null) {
+      notice("请选择收货地址!");
+      return;
+    }
+
+    var data = {
+      itemId: itemId,
+      price: price,
+      itemNum: itemNum,
+      addressId: addressId
+    };
+    console.log(data)
+    //提交订单
+    _post(shopUrls.submitItemOrder, data, function (result) {
+      console.log(result)
+      if (result.code == 200) {
+        if (result.data.payType == 2) {
+          $.confirm("是否蓝钻兑换？", function () {
+            //设置成功付款状态
+            _post(shopUrls.cogOrderStatus, {
+              id: result.data.id,
+              orderStatus: 1
+            }, function (result1) {
+              if (result1.code == 200) {
+                orderId = result1.data.id;
+                window.location.href = "#!/shop/order_success.html";
+              } else if (result1.code == 401) {
+                window.location.href = "#!/login.html";
+              } else {
+                notice(result1.message);
+              }
+            }, true);
+          }, function () {
+            // window.location.href = "#!/user_center.html";
+          });
+        } else {
+          $.confirm("是否选者支付宝支付？", function () {
+            // //设置成功付款状态
+            // _post(shopUrls.cogOrderStatusAlipay, {id: result.data.id, orderStatus: 1}, function (result1) {
+            //     /*if (result1.code == 200) {
+            //         orderId = result1.data.id;
+            //         window.location.href = "#!/shop/order_success.html";
+            //     } else if (result1.code == 401) {
+            //         window.location.href = "#!/login.html";
+            //     } else {
+            //         notice(result1.message);
+            //     }*/
+            // }, true);
+
+            //发起支付宝支付
+            window.location.href = shopUrls.cogOrderStatusAlipay + "?id=" + result.data.id + "&orderStatus=1";
+          }, function () {
+            // window.location.href = "#!/user_center.html";
+          });
+          // notice("支付功能待开发。。。。");
+        }
+      } else if (result.code == 401) {
+        window.location.href = "#!/login.html";
+      } else {
+        notice(result.message);
+      }
+    }, true);
+  }
+</script>

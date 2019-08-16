@@ -1,0 +1,107 @@
+<div class="lian-bg">
+	<div class="hyaline-head">
+		<a href="#!/my_mill.html" class="back-btn" onclick="closeMillTimeout();">
+			<img src="img/left.png" />
+		</a>
+		我的收集器
+	</div>
+	<!--<div class="lian-left">ADS-M</div>-->
+	<!--<div class="lian-right">结算</div>-->
+	<div class="circle">
+		<div class="c-circle first"></div>
+	</div>
+	<div class="lian-detail">
+		<p class="lian-z" id="number"></p>
+		<!--<p>本次预估收益：<font id="chargeXlsMoney"> </font> ADS</p>-->
+		<p>收集器名称：<font id="name"> </font></p>
+		<p>收集器动力：<font id="exploitRate"> </font> G</p>
+		<p>累计获得：<font id="cumulative"> </font> 蓝钻</p>
+		<p>上次结算时间：<font id="lastTime"></font></p>
+		<p>本次结算时间：<font id="thisTime"></font></p>
+	</div>
+</div>
+<script type="text/javascript">
+    /*var pageNo = 1, pageSize = 10;
+	_get(Interf.getMyMillPage,{pageNo:pageNo,pageSize:pageSize},function(result){
+	   if(result.code == 200){
+	      var html="";
+		  $.each(result.data,function(i,j){
+		     	html +=	'<div class="lian-detail">               '
+					+'	<p class="lian-z">0.0288570595</p>      '
+					+'	<p>相机算力：'+j.exploitRate+' G</p>                 '
+					+'	<p>累计获得：'+j.alreadyMoney+' ADS</p>              '
+					+'	<p>上次结算时间：'+j.settlementTime+'</p>'
+					+'	<p>到期时间：'+j.endDate+'</p>    '
+					+'</div>                                    ';
+		  });
+	   } else if(result.code == 401){
+		  window.location.href = "#!/login.html"; 
+	   } else {
+		  notice(result.message);
+	   }			   
+	});*/
+	var isRun = false;
+	 $("#number").html(0.00);//已产出得币
+		// 获取加载参数信息
+	_get(Interf.getMySpcGoNumber,{myMillId:myMillId},function(result){
+	   if(result.code == 200){
+	       $("#cumulative").html(result.data.cumulative);//累计获取
+		   $("#name").html(result.data.name);//收集器名称
+		   $("#exploitRate").html(result.data.exploitRate);//收集器速度
+		   //$("#chargeXlsMoney").html(result.data.chargeXlsMoney);//代收取
+		   
+		   var numberVar = getInervalHour(new Date(result.data.xingzhexqUserMill.createTime).getTime())  * (result.data.xingzhexqUserMill.xingzhexqMoney / (result.data.xingzhexqUserMill.runTime * 24))
+		   $("#cumulative").html(numberVar.toFixed(6));
+		   //$("#queryRecode").attr("href","xlsUserMillRecord.html?id="+myMillId);//代收取
+		   var lastTime = "未存在结算情况";
+		   if (!result.data.isNew) {
+		       lastTime = result.data.lastTime;
+		   }
+		   $("#lastTime").html(lastTime);//上次收取币时间
+		   $("#thisTime").html(result.data.thisTime);//下次收取币时间
+		   var num = result.data.exitsXlsMoney;
+		  // $('#J_Progress').progressBar('set', "."+(num/result.data.chargeXlsMoney)*10);
+		   // 调用计时函数
+		   setTimeout(function(){
+		       isRun = true;
+		       var t = setTimeout(timedCount(num,result.data.average,result.data.chargeXlsMoney),3000);
+		   },1000);
+	   } else if(result.code == 401){
+          window.location.href = "#!/login.html"; 
+	   } else {
+		  notice(result.message);
+	   }			   
+	},true);
+	
+	function timedCount(num,value,chargeXlsMoney){
+	    if(!isRun){
+		   return;
+		}
+	    // 百分比进度增加
+	    num = num*10+value*10;
+		num = parseFloat(num/10).toFixed(5);
+		//$('#J_Progress').progressBar('set', "."+(num/chargeXlsMoney)*10);
+		//num = accuracyAdd(num,value);
+		$("#number").text(num);
+		// 设置条件使停止计时
+		var t = setTimeout(function(){timedCount(num,value,chargeXlsMoney)},3000);
+	} 
+	
+	function accuracyAdd(firstNumber,lastNumber){
+            var num1,num2,m;
+            try{num1=firstNumber.toString().split(".")[1].length}catch(e){num1=0};
+            try{num2=lastNumber.toString().split(".")[1].length}catch(e){num2=0};
+            m=Math.pow(10,Math.max(num1,num2));
+            return (firstNumber*m+lastNumber*m)/m;
+    }
+	
+	function closeMillTimeout() {
+	    isRun = false;
+	}
+	
+	function getInervalHour(startDate) {
+	    var ms = new Date().getTime() - startDate;
+	    if (ms < 0) return 0;
+	    return Math.floor(ms / 1000 / 60 / 60);
+	}
+</script>

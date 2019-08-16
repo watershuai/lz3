@@ -1,0 +1,102 @@
+<div class="head">
+  <a href="#!/user_center.html" class="back-btn">
+    <img src="img/left.png" />
+  </a>
+  蓝钻记录
+</div>
+<div class="containe-h" id="wrapper">
+  <div id="minirefresh" class="minirefresh-wrap">
+    <div class="minirefresh-scroll">
+      <ul class="message-grid" id="tradeList">
+
+      </ul>
+    </div>
+  </div>
+</div>
+<script>
+  var pageNo = 1,
+    pageSize = 10,
+    pageData = 0;
+  requestDelayTime = 600;
+
+  // 引入任何一个主题后，都会有一个 MiniRefresh 全局变量
+  var miniRefresh = new MiniRefresh({
+    container: '#minirefresh',
+    down: {
+      callback: function () {
+        // 下拉事件
+        setTimeout(function () {
+          // 每次下拉刷新后，上拉的状态会被自动重置
+          Refresh();
+          if (pageNo == 1) {
+            miniRefresh.endDownLoading();
+          }
+          miniRefresh.endUpLoading();
+        }, requestDelayTime);
+      }
+    },
+    up: {
+      callback: function () {
+        setTimeout(function () {
+          Load();
+          if (pageNo == 1) {
+            miniRefresh.endDownLoading();
+          }
+          miniRefresh.endUpLoading(pageData == 0 ? true : false);
+        }, requestDelayTime);
+      }
+    }
+  });
+
+  getUserTradeRecord();
+
+  /**
+   * 获取交易记录
+   */
+  function getUserTradeRecord() {
+    _get(Interf.getUserTradeRecord, {
+      pageNo: pageNo,
+      pageSize: pageSize
+    }, function (result) {
+      if (result.code == 200) {
+        var html = "";
+        console.log(result.data)
+        pageData = result.data.length;
+        console.log(pageData)
+        console.log(pageNo)
+        if (pageNo == 1) {
+          $("#tradeList").empty();
+        }
+
+        $.each(result.data, function (i, j) {
+          var money = j.money;
+          if (money > 0) {
+            money = "+" + money;
+          }
+
+          html += '<li><div class="message-icon">' +
+            '<img src="img/trade/trade' + j.typeCode + '.png" /></div>' +
+            '<div class="message-info"><div class="message-title">' +
+            '<span class="price">' + money + '</span>' +
+            '<span class="message-time">' + j.createTime + '</span></div>' +
+            '<div class="message-content">' + j.content + '</div></div></li>';
+        });
+        $("#tradeList").append(html);
+      } else if (result.code == 401) {
+        window.location.href = "#!/login.html";
+      } else {
+        notice(result.message);
+      }
+    }, true);
+  }
+
+  function Refresh() {
+    pageNo = 1;
+    getUserTradeRecord();
+  }
+
+  function Load() {
+    pageNo += 1;
+    getUserTradeRecord();
+  }
+</script>

@@ -1,0 +1,230 @@
+<link rel="stylesheet" href="css/bus_entry.css">
+<link rel="stylesheet" href="css/framework7.css">
+<link rel="stylesheet" href="css/city_style.css">
+<div class="entry-container">
+  <div class="head">
+    <span class="back-btn" onclick="back()">
+      <img src="img/left.png" />
+    </span>
+    商家入驻
+  </div>
+  <form>
+    <ul class="menu">
+      <li class="item">
+        <div class="name">省市县</div>
+        <div class="text">
+          <input type="text" placeholder="请选择城市" readonly="readonly" id="location" name="location" class="">
+        </div>
+      </li>
+      <li class="item">
+        <div class="name">店铺名称</div>
+        <div class="text">
+          <input type="text" id="shopName" placeholder="请输入店铺名称(不超过10个字)" autoComplete="off" maxlength="10">
+        </div>
+      </li>
+      <li class="item">
+        <div class="name">店主姓名</div>
+        <div class="text">
+          <input type="text" id="shopUserName" placeholder="请输入店主姓名" autoComplete="off">
+        </div>
+      </li>
+      <li class="item">
+        <div class="name">店主手机</div>
+        <div class="text">
+          <input type="text" id="phone" placeholder="请输入店主手机号" autoComplete="off" maxlength="11">
+        </div>
+      </li>
+      <li class="item">
+        <div class="name">店铺地址</div>
+        <div class="text">
+          <input type="text" id="address" placeholder="请输入店铺地址(不超过15个字)" autoComplete="off" maxlength="15">
+        </div>
+      </li>
+      <li class="item other">
+        <div class="name">店铺介绍</div>
+        <textarea placeholder="请输入店铺介绍(不超过30个字)" id="trade" maxlength="30"></textarea>
+      </li>
+      <input type="file" capture="camera" id="btn_file" style="display:none" onchange="updateImg(this);" typeId="1">
+      <li class="item other upload-door">
+        <div class="name">上传门头图片</div>
+        <div class="up_img card-z default" onclick="btnImg(1);">
+          <img class="show-img " id="picUrl1" src="img/upload.png">
+        </div>
+      </li>
+      <li class="item other upload-innner">
+        <div class="name">上传内部图片</div>
+        <div class="up_img card-f default" onclick="btnImg(2);">
+          <img class="show-img" id="picUrl2" src="img/upload.png">
+        </div>
+      </li>
+    </ul>
+  </form>
+  <div class="btn">提&nbsp;交</div>
+</div>
+<script src="js/framework7.js"></script>
+<script src="js/regionsObject2.js"></script>
+<script src="js/cityPicker.js"></script>
+
+<script>
+  function back(event) {
+    window.history.go(-1)
+  }
+
+  $('.btn').on('click', function () {
+    var poneReg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+    var location = $('#location').val().trim() // 省市区
+    var shopName = $('#shopName').val().trim() //店铺名称
+    var shopUserName = $('#shopUserName').val().trim() //店主姓名
+    var phone = $('#phone').val().trim() //电话
+    var address = $('#address').val().trim() // 店铺地址
+    var trade = $('#trade').val().trim() // 店铺介绍
+    var picUrl1 = $('#picUrl1').attr("src") // 门头图片
+    var picUrl2 = $('#picUrl2').attr("src") // 内部图片
+    var location_arr = location.split(' ')
+    var province = location_arr[0] // 省
+    var city = location_arr[1] // 市
+    var area = location_arr[2] // 区
+    if (location == null || location == "") {
+      notice("请选择城市!");
+      return;
+    }
+    if (shopName == null || shopName == "") {
+      notice("请输入店铺名称!");
+      return;
+    }
+    if (shopUserName == null || shopUserName == "") {
+      notice("请输入店主姓名!");
+      return;
+    }
+    if (phone == null || phone == "") {
+      notice("请输入店主手机号!");
+      return;
+    }
+    if (!poneReg.test(phone)) {
+      notice("请输入正确手机号!");
+      return;
+    }
+
+    if (address == null || address == "") {
+      notice("请输入地址信息!");
+      return;
+    }
+    if (trade == null || trade == "") {
+      notice("请输入地址信息!");
+      return;
+    }
+
+    if (picUrl1 == "img/upload.png") {
+      notice("请上传门头图片!");
+      return;
+    }
+    if (picUrl2 == "img/upload.png") {
+      notice("请上传内部图片!");
+      return;
+    }
+
+    var param = {
+      shopName: shopName, //店铺名称
+      shopUserName: shopUserName, //店主姓名
+      phone: phone, //电话
+      trade: trade, //行业介绍
+      province: province, //省
+      city: city, //市
+      area: area, //区
+      address: address, //详细地址
+      picUrl1: picUrl1, //店外图片
+      picUrl2: picUrl2, //店内图片
+    }
+    console.log(param)
+    _post(shopUrls.bus_entry, param, function (result) {
+      console.log(result)
+      if (result.code == 200) {
+        //success2("提交成功");
+         window.location.href = "#!/user_center.html";
+        //$("#nickName").html(result.data.nickName);
+      } else if (result.code == 401) {} else {
+        notice(result.message);
+      }
+    }, true);
+  })
+
+
+
+  function btnImg(typeId) {
+    $('#btn_file').click();
+    $('#btn_file').attr("typeId", typeId);
+  }
+
+  function updateImg(obj) {
+    ImgToBase64(obj, 400, function (data) {
+      if ($('#btn_file').attr("typeId") == "1") {
+        $(".card-z").find("img").attr("src", data);
+      } else if ($('#btn_file').attr("typeId") == "2") {
+        $(".card-f").find("img").attr("src", data);
+      }
+    });
+  }
+
+
+  function ImgToBase64(file, maxLen, callBack) {
+    var imgUrl = $(file).val();
+    file = file.files[0];
+    var imgSize = file.size; //获取图片大小
+    var maxSize = 5 * 1024 * 1024 + 102400; // 5M
+    var urlType = imgUrl.substring(imgUrl.lastIndexOf(".")).toLowerCase();
+    if (!urlType.match(/.png|.jpg|.gif/)) {
+      // $(this).parent().parents().siblings(".input-check-tip").text("上传格式错误，文件格式必须为：png/jpg/gif").css({
+      //     "color": "#E13B3B"
+      // })
+      alert("上传图片错误，请上传jpg、png、gif格式，大小在5M以内的图片");
+      return;
+    } else if (imgSize > maxSize) {
+      // $(this).parent().parents().siblings(".input-check-tip").text("上传图片超出大小，最大上传5M").css({
+      //     "color": "#E13B3B"
+      // })
+      alert("上传图片错误，请上传jpg、png、gif格式，大小在5M以内的图片");
+      return;
+    }
+
+
+
+    var img = new Image();
+
+    var reader = new FileReader(); //读取客户端上的文件
+    reader.onload = function () {
+      var url = reader.result; //读取到的文件内容.这个属性只在读取操作完成之后才有效,并且数据的格式取决于读取操作是由哪个方法发起的.所以必须使用reader.onload，
+      img.src = url; //reader读取的文件内容是base64,利用这个url就能实现上传前预览图片
+    };
+    img.onload = function () {
+      //生成比例
+      var width = img.width,
+        height = img.height;
+      //计算缩放比例
+      var rate = 1;
+      if (width >= height) {
+        if (width > maxLen) {
+          rate = maxLen / width;
+        }
+      } else {
+        if (height > maxLen) {
+          rate = maxLen / height;
+        }
+      };
+      img.width = width * rate;
+      img.height = height * rate;
+      //生成canvas
+      var canvas = document.createElement("canvas");
+      var ctx = canvas.getContext("2d");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      if (imgSize > 1 * 1024 * 1024) {
+        var base64 = canvas.toDataURL('image/png', 0.9);
+      } else {
+        var base64 = canvas.toDataURL('image/png', 0.2);
+      }
+      callBack(base64);
+    };
+    reader.readAsDataURL(file);
+  }
+</script>

@@ -1,0 +1,202 @@
+<div class="head">
+	<a href="#!/user_center.html" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	设置
+</div>
+<div class="con">
+	<div class="cogs-div photo-div">
+		<div class="input-group">
+			<a class="input-title">
+				<img src="img/user1.jpg" /><!--<span>请上传</span>-->
+			</a>
+		</div>
+	<!--	<div class="input-group">
+			<a onclick="updateNickName()" class="input-title" >昵称<span id="nickName">请填写</span></a>
+		</div>
+		<div class="input-group">
+			<a onclick="updateSex()" class="input-title">性别<span id="sex">未设置</span></a>
+		</div>
+		<div class="input-group">
+			<a onclick="updateAddress()" class="input-title">所在地<span id="address">请选择</span></a>
+		</div>-->
+	</div>
+	<div class="cogs-div">
+		<!--<div class="input-group">
+			<a onclick="updateInfo(this,1)" class="input-title">邮箱<span id="email">未绑定</span></a>
+		</div>
+		<div class="input-group">
+			<a onclick="updateInfo(this,2)" class="input-title">微信<span id="weixin">未绑定</span></a>
+		</div>
+		<div class="input-group">
+			<a onclick="updateInfo(this,3)" class="input-title">QQ<span id="qq">未绑定</span></a>
+		</div>
+		<div class="input-group">
+			<a onclick="updateInfo(this,4)" class="input-title">支付宝<span id="alipay">未绑定</span></a>
+		</div>-->
+		<div class="input-group">
+			<a onclick="updatePwd()" class="input-title">密码管理</a>
+		</div>
+	</div>
+	<div class="cogs-div">
+		<div class="input-group">
+			<a onclick="feedback();" class="input-title">联系我们</a>
+		</div>
+		<div class="input-group">
+			<a onclick="feedback();" class="input-title">意见反馈</a>
+		</div>
+	</div>
+	<div class="cogs-foot">
+		<a class="card-btn" href="javascript:loginOut();">
+			退出登录
+		</a>
+	</div>
+</div>
+<script type="text/javascript">
+	_get(Interf.getUser,{},function(result){
+	   if(result.code == 200){
+		  if(result.data.headImg != null && result.data.headImg !=""){
+			 $("#headImg").html(result.data.headImg);// 用户头像
+		  }		  
+		  $("#email").html(result.data.email);// 用户昵称
+		  $("#qq").html(result.data.qq);
+		  $("#weixin").html(result.data.weixin);
+		  $("#alipay").html(result.data.alipay);
+		  $("#nickName").html(result.data.nickName);
+		  
+		  if(result.data.sex == 0){
+		  	$("#sex").html("男");
+		  }
+		  
+		  if(result.data.sex == 1){
+		  	$("#sex").html("女");
+		  }
+		  
+		  if(result.data.province == undefined){
+	   			result.data.province = ""
+	   		}
+	   		
+	   		if(result.data.city == undefined){
+	   			result.data.city = ""
+	   		}
+	   		
+	   		if(result.data.area == undefined){
+	   			result.data.area = ""
+   			}
+		  
+		  $("#address").html(result.data.province + " " + result.data.city + " " + result.data.area);
+	   } else if(result.code == 401){
+		  window.location.href = "#!/login.html"; 
+	   } else {
+		  notice(result.message);
+	   }			   
+	});
+	
+	/**
+	  * 修改用户昵称
+	  */
+	function updateNickName() {
+	     window.location.href = "#!/updateInfo/update_nickname.html";
+	}
+	
+	/**
+	  * 修改用户性别
+	  */
+	function updateSex() {
+	     window.location.href = "#!/updateInfo/update_sex.html";
+	}
+	
+	/**
+	  * 修改用户所在地
+	  */
+	function updateAddress() {
+	     window.location.href = "#!/updateInfo/update_address.html";
+	}
+	
+	/**
+	  * 修改用户资料信息
+	  */
+	function updateInfo(obj,type) {
+	    var typeParam,title = "";
+		if (type == 1) {
+		    title = "邮箱";
+			typeParam = "email";
+		} 
+		if (type == 2) {
+		    title = "微信";
+			typeParam = "weixin";
+		} 
+		if (type == 3) {
+		    title = "QQ";
+			typeParam = "qq";
+		} 
+		if (type == 4) {
+		    title = "支付宝";
+			typeParam = "alipay";
+		} 		
+		if (type == 5) {
+		    title = "邀请人";
+			typeParam = "parentId";
+		}
+		
+		var bdHtml = $(obj).find("span").html();
+		if(bdHtml == "未绑定"){
+			bdHtml = "";
+		}
+		
+		$(document).dialog({
+			type : 'confirm',
+			style: 'default',  // default、ios、android
+			contentScroll:false,
+			titleText: title,
+			content: '<input class="cogs-input" placeholder="'+title+'" id="q'+typeParam+'" value="'+ bdHtml +'" style="BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: solid"/>',
+			onClickConfirmBtn: function(){
+                var data = {
+				  __ajax:"json"
+				};
+				data[typeParam] = $("#q"+typeParam+"").val();
+				_post(Interf.updateInfo,data,function(result){
+				   if(result.code == 200){
+				        $(obj).html(data[typeParam]);
+						success2('修改成功!');	
+				   } else if(result.code == 401){
+					  window.location.href = "#!/login.html"; 
+				   }else{
+					  notice(result.message);
+				   }			   
+				},true);
+            }
+		});
+	}
+	
+	/**
+	  * 跳转管理
+	  */
+	function updatePwd () {
+	    window.location.href = "#!/password_manage.html"; 
+	}
+	
+	/**
+	  * 用户退出登录
+	  */
+	function loginOut () {
+		_get(Interf.loginOut,{},function(result){
+		   if(result.code == 200){
+				notice('退出成功!');	
+				window.location.href = "#!/login.html"; 
+		   } else if(result.code == 401){
+			  window.location.href = "#!/login.html"; 
+		   }else{
+			  notice(result.message);
+		   }			   
+		},true);
+	    
+	}
+	
+	/**
+	  * 跳转意见页面
+	  */
+	function feedback(){
+	    window.location.href = "#!/user_feedback.html"; 
+	}
+</script>

@@ -1,0 +1,228 @@
+<style>
+  .but_pay{
+     filter:alpha(opacity=70); opacity:0.7;
+  }
+</style>
+<div class="head">
+	<a href="#!/home.html" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	积分计划
+</div>
+<div class="containe-h">
+	<input type="hidden" id="millId"/>
+	<div id="millList">
+		
+	</div>
+</div>
+	<!--<div class="shop-div">
+		<img src="img/kuang1.png" />
+		<div class="kuang-detail">
+			<p class="kuang-name">A 型收集器</p>
+			<p class="kuang-common">SPC 开采率：0.20G/s</p>
+			<p class="kuang-common">运营周期：500 天 产出：200000 钻</p>
+			<p class="kuang-money">价格：200000 钻 <a class="kuang-btn">购 买</a></p>
+		</div>
+	</div>
+	<div class="shop-div">
+		<img src="img/kuang2.png" />
+		<div class="kuang-detail">
+			<p class="kuang-name">巨形收集器</p>
+			<p class="kuang-common">SPC 开采率：0.18G/s</p>
+			<p class="kuang-common">运营周期：550 天 产出：10000 钻</p>
+			<p class="kuang-money">价格：10000 钻 <a class="kuang-btn">购 买</a></p>
+		</div>
+	</div>
+	<div class="shop-div">
+		<img src="img/kuang3.png" />
+		<div class="kuang-detail">
+			<p class="kuang-name">大型收集器</p>
+			<p class="kuang-common">SPC 开采率：0.17G/s</p>
+			<p class="kuang-common">运营周期：600 天 产出：50000 钻</p>
+			<p class="kuang-money">价格：50000 钻 <a class="kuang-btn">购 买</a></p>
+		</div>
+	</div>
+	<div class="shop-div">
+		<img src="img/kuang4.png" />
+		<div class="kuang-detail">
+			<p class="kuang-name">中型收集器</p>
+			<p class="kuang-common">SPC 开采率：0.15G/s</p>
+			<p class="kuang-common">运营周期：650 天 产出：10000 钻</p>
+			<p class="kuang-money">价格：10000 钻 <a class="kuang-btn">购 买</a></p>
+		</div>
+	</div>
+	<div class="shop-div">
+		<img src="img/kuang5.png" />
+		<div class="kuang-detail">
+			<p class="kuang-name">小型收集器</p>
+			<p class="kuang-common">SPC 开采率：0.13G/s</p>
+			<p class="kuang-common">运营周期：800 天 产出：5000 钻</p>
+			<p class="kuang-money">价格：5000 钻 <a class="kuang-btn">购 买</a></p>
+		</div>
+	</div>
+	<div class="shop-div">
+		<img src="img/kuang6.png" />
+		<div class="kuang-detail">
+			<p class="kuang-name">微型收集器</p>
+			<p class="kuang-common">SPC 开采率：0.12G/s</p>
+			<p class="kuang-common">运营周期：900 天 产出：1000 钻</p>
+			<p class="kuang-money">价格：1000 钻 <a class="kuang-btn">购 买</a></p>
+		</div>
+	</div>-->
+</div>
+<!--浮动层-->
+<div class="ftc_wzsf">
+	<div class="srzfmm_box">
+		<div class="qsrzfmm_bt clear_wl">
+			<img src="img/xx_03.jpg" class="tx close fl">
+			<img src="img/user.png" class="tx fl" />
+			<span class="fl">请输入支付密码</span></div>
+		<div class="zfmmxx_shop">
+			<div class="mz" id="goodsName">测试商品</div>
+			<div class="zhifu_price" style="color:Green"><font id="price">0.00</font><small>钻</small></div></div>
+		<ul class="mm_box">
+			<li></li><li></li><li></li><li></li><li></li><li></li>
+		</ul>
+	</div>
+	<div class="numb_box">
+		<div class="xiaq_tb">
+			<img src="img/jftc_14.jpg" height="10"></div>
+		<ul class="nub_ggg">
+			<li><a href="javascript:void(0);" class="zf_num">1</a></li>
+			<li><a href="javascript:void(0);" class="zj_x zf_num">2</a></li>
+			<li><a href="javascript:void(0);" class="zf_num">3</a></li>
+			<li><a href="javascript:void(0);" class="zf_num">4</a></li>
+			<li><a href="javascript:void(0);" class="zj_x zf_num">5</a></li>
+			<li><a href="javascript:void(0);" class="zf_num">6</a></li>
+			<li><a href="javascript:void(0);" class="zf_num">7</a></li>
+			<li><a href="javascript:void(0);" class="zj_x zf_num">8</a></li>
+			<li><a href="javascript:void(0);" class="zf_num">9</a></li>
+			<li><a href="javascript:void(0);" class="zf_empty" >清空</a></li>
+			<li><a href="javascript:void(0);" class="zj_x zf_num">0</a></li>
+			<li><a href="javascript:void(0);" class="zf_submit but_pay" style="background-color:#428bca;color:#fff;">确定</a></li>
+		</ul>
+	</div>
+	<div class="hbbj"></div>
+</div>
+<script>
+    var isSetPayPwd = 0;
+	var userXlsMonery = 0;
+    _get(Interf.getMillList,{},function(result){
+	   if(result.code == 200){
+	      isSetPayPwd = result.data.isSetPayPwd;
+		  	userXlsMonery = result.data.userXlsMonery;
+	      if(result.data.millList.length>0) {
+             var html = "";
+		     $.each(result.data.millList,function (i,j) {
+				   html += '<div class="shop-div">'
+						+'	<img src="img/financing/financing2.jpg" />'
+						+'	<div class="kuang-detail">'
+						+'	<p class="kuang-name">'+j.name+'</p>'
+						+'	<p class="kuang-common">预期收益：'+j.xingzhexqMoney+'钻</p>'
+						+'	<p class="kuang-common">理财周期：'+j.runTime+' 天</p>'
+						+'	<p class="kuang-money">价格：'+j.price+' 积分 <a class="kuang-btn" href="javascript:buyMill('+j.price+',\''+j.id+'\',\''+j.name+'\');">兑 换</a></p>'
+						+'	</div>                                                                       '
+						+'</div>                                                                         ';
+			 });
+			 $("#millList").append(html);
+		  }
+	   } else if(result.code == 401){
+		  window.location.href = "#!/login.html"; 
+	   } else {
+		  notice(result.message);
+	   }			   
+	},false);
+	
+	/**
+	  * 购买收集器
+	  */
+	function buyMill(price,id,name) {
+	    if(isSetPayPwd == 0) {
+		    $(document).dialog({
+				type : 'confirm',
+				closeBtnShow: true,
+				style: 'default',
+				content: '检测到您未设置支付密码,无法购买!',
+				buttonTextConfirm: '现在修改',
+                buttonTextCancel: '下次再说',
+				onClickConfirmBtn: function(){
+					window.location.href = "#!/update_pay_password.html"; 
+				}
+			});
+			return;
+		}
+		// 检查用户金额是否可以购买收集器
+		if (userXlsMonery < price) {
+		   notice("账户余额不足!");
+		   return;
+		}
+		$("#goodsName").html(name);
+		$("#price").html(price);
+		$("#millId").val(id);
+		$(".ftc_wzsf").show();
+	}
+	
+	    
+		//关闭浮动
+		$(".close").click(function(){
+		    $(".zf_submit").addClass("but_pay");
+			$(".ftc_wzsf").hide();
+			$(".mm_box li").removeClass("mmdd");
+			$(".mm_box li").attr("data","");
+			i = 0;
+		});
+			//数字显示隐藏
+		$(".xiaq_tb").click(function(){
+			$(".numb_box").slideUp(500);
+		});
+		$(".mm_box").click(function(){
+			$(".numb_box").slideDown(500);
+		});
+			//----
+		var i = 0;
+		$(".nub_ggg li .zf_num").click(function(){
+			if(i<6){
+				$(".mm_box li").eq(i).addClass("mmdd");
+				$(".mm_box li").eq(i).attr("data",$(this).text());
+				i++
+				if (i==6) {
+                   $(".zf_submit").removeClass("but_pay");
+				} else {
+				   $(".zf_submit").addClass("but_pay");
+				};
+			} 
+		});
+			
+		$(".nub_ggg li .zf_submit").click(function(){
+			if(i == 6){
+				var pwd = "";
+				$(".mm_box li").each(function(){
+					pwd += $(this).attr("data");
+				});
+				var data = {
+				   millId:$("#millId").val(),
+				   payPassword:pwd
+				}
+				_post(Interf.payOrder,data,function(result){
+				   if(result.code == 200){
+						success2("购买成功");
+						$(".ftc_wzsf").hide();
+						$(".mm_box li").removeClass("mmdd");
+						$(".mm_box li").attr("data","");
+						i = 0;
+				   } else{
+					  notice(result.message);
+				   }			   
+				},true,"支付中...");
+			} else{
+			    //notice("请输入支付密码!");
+			}
+		});
+	
+		$(".nub_ggg li .zf_empty").click(function(){
+		    $(".zf_submit").addClass("but_pay");
+			$(".mm_box li").removeClass("mmdd");
+			$(".mm_box li").attr("data","");
+			i = 0;
+		});
+</script>

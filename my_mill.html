@@ -1,0 +1,152 @@
+<div class="head">
+    <a href="#!/user_center.html" class="back-btn">
+        <img src="img/left.png"/>
+    </a>
+    我的计划
+</div>
+<div class="containe-h" id="wrapper">
+    <div id="minirefresh" class="minirefresh-wrap">
+        <div class="minirefresh-scroll" id="vue-plan">
+            <ul class="plan-item-list" id="myPlanList">
+                <li v-for="mill in mills" >
+                    <div class="item-pic" >
+                        <img src="img/financing/financing2.jpg"/>
+                    </div>
+                    <div class="item-info">
+                        <p class="item-title">{{mill.name}}</p>
+                        <p class="item-title" style="font-size: 0.2rem;">{{mill.createTime | formatDate}} 到 {{mill.expireTime | formatDate}}</p>
+                        <p class="item-title" style="font-size: 0.2rem;">领取：{{mill.dayGet}}天，已领钻：{{mill.alreadyMoney}}，剩余：{{mill.notalreadyMoney}}</p>
+                        <p class="item-price  kuang-price">
+                            {{mill.runTime}}天产出<span class="item-price-num">{{mill.xingzhexqMoney}}</span>钻
+                        </p>
+                        <p v-if="mill.isDayGet==1" class=""><a style="text-decoration: none;
+                            text-align: center;
+                            background-color: #E64340;
+                            color: #FFFFFF;
+                            border: 1px solid #E64340;
+                            padding: 0rem 1rem;
+                            border-radius: 1rem;
+                            position: absolute;
+                            top: 5.5rem;
+                            right: 1rem;
+                            height: 2rem;
+                            line-height: 2rem;
+                            width: 5rem;"  v-bind:id="mill.id" href="javascript:;" onclick="dayget(this)">领取当天</a>
+
+                        </p>
+                        <p v-if="mill.isDayGet==2"class=""><a style="text-decoration: none;
+                            text-align: center;
+                            background-color: #E64340;
+                            color: #FFFFFF;
+                            border: 1px solid #E64340;
+                            padding: 0rem 1rem;
+                            border-radius: 1rem;
+                            position: absolute;
+                            top: 5.5rem;
+                            right: 1rem;
+                            height: 2rem;
+                            line-height: 2rem;
+                            width: 5rem;"   href="javascript:;" >已领取</a>
+
+                        </p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    var pageNo = 1, pageSize = 10, pageData = 0;
+    requestDelayTime = 600;
+    // 引入任何一个主题后，都会有一个 MiniRefresh 全局变量
+    var miniRefresh = new MiniRefresh({
+        container: '#minirefresh',
+        down: {
+            callback: function () {
+                // 下拉事件
+                setTimeout(function () {
+                    // 每次下拉刷新后，上拉的状态会被自动重置
+                    Refresh();
+                    if (pageNo == 1) {
+                        miniRefresh.endDownLoading();
+                    }
+                    miniRefresh.endUpLoading();
+                }, requestDelayTime);
+            }
+        },
+        up: {
+            callback: function () {
+                setTimeout(function () {
+                    Load();
+                    if (pageNo == 1) {
+                        miniRefresh.endDownLoading();
+                    }
+                    miniRefresh.endUpLoading(pageData == 0 ? true : false);
+                }, requestDelayTime);
+            }
+        }
+    });
+
+    getMyMillPage();
+
+    var vm = new Vue({
+        el: '#vue-plan',
+        data: {
+            mills: []
+        },
+        filters: {
+            formatDate: function (val) {
+                return DateFormat.format(DateFormat.formatToDate(val), "yyyy-MM-dd");
+            }
+        }
+    })
+
+    function getMyMillPage() {
+        _get(Interf.getMyMillPage, {
+            pageNo: pageNo,
+            pageSize: pageSize
+        }, function (result) {
+            if (result.code == 200) {
+                pageData = result.data.length;
+                if (!$.isEmptyObject(result.data)) {
+                    vm.mills = result.data;
+                }
+            } else if (result.code == 401) {
+                window.location.href = "#!/login.html";
+            } else {
+                notice(result.message);
+            }
+        });
+    }
+    function dayget(usermillid) {
+        var millid=usermillid.id;
+        _get(Interf.dayget, {
+            usermillid: millid
+        }, function (result) {
+            if (result.code == 200) {
+                // $("#"+millid).html("已领取");
+                Refresh();
+                notice("当天领取成功");
+            } else if (result.code == 401) {
+                window.location.href = "#!/login.html";
+            }
+        });
+    }
+    function Refresh() {
+        pageNo = 1;
+        getMyMillPage();
+    }
+
+    function Load() {
+        pageNo += 1;
+        getMyMillPage();
+    }
+
+    /**
+     * 查看收集器信息
+     */
+    function queryMillDetail(id) {
+        myMillId = id;
+        window.location.href = "#!/my_mill_detail.html";
+    }
+</script>

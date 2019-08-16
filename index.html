@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1,user-scalable=no">
+    <title>蓝钻网</title>
+    <link rel="stylesheet" href="css/style.css?v20181022" />
+	<link rel="stylesheet" href="css/dialog.css?v20181022" />
+	<link rel="stylesheet" href="css/zhifu.css?v20181022">
+	<link rel="stylesheet" href="css/jquery-weui.min.css?v20181022" />
+	<link rel="stylesheet" href="css/weui.min.css?v20181022" />
+    <script type="text/javascript" src="js/jquery.min.js?v20181022"></script>
+	<script type="text/javascript" src="js/jquery.ba-hashchange.js?v20181022" ></script>
+	<script type="text/javascript" src="js/onePage.js?v20181022" ></script>
+	<script type="text/javascript" src="js/clipboard.min.js?v20181022" ></script>
+	<script type="text/javascript" src="js/dialog.min.js?v20181022" ></script>
+	<script type="text/javascript" src="js/common.js" ></script>
+	<script type="text/javascript" src="js/jquery.md5.js?v20181022" ></script>
+	<script type="text/javascript" src="js/jquery-weui.min.js?v20181022" ></script>
+	<script type="text/javascript" src="js/city-picker.min.js?v20181022" ></script>
+	<script type="text/javascript" src="js/iscroll.js?v20181022" ></script>
+	<script type="text/javascript" src="js/fastclick.js?v20181022" ></script>
+	<script type="text/javascript" src="js/swiper.min.js?v20181022" ></script>
+
+	<!--
+    	作者：lizhaowen
+    	时间：2018-11-24
+    	描述：上拉加载，下拉刷新插件
+    -->
+    <link rel="stylesheet" href="lib/minirefresh-2.0.1/minirefresh.css" />
+    <link rel="stylesheet" href="lib/minirefresh-2.0.1/themes/applet/minirefresh.theme.applet.css" />
+    <script type="text/javascript" src="lib/minirefresh-2.0.1/minirefresh.js"></script>
+    <script type="text/javascript" src="lib/minirefresh-2.0.1/themes/applet/minirefresh.theme.applet.js"></script>
+
+	<!--
+    	作者：wangcw
+    	时间：2018-12-11
+    	描述：时间格式化插件 Vue
+    -->
+	<script type="text/javascript" src="js/dateformat-min.js?20181213" ></script>
+	<script type="text/javascript" src="js/vue.min.js" ></script>
+
+	<script>
+	    inviteCode = GetQueryString("inviteCode");
+	    var lognId = GetQueryString("id");
+		$(function(){
+			FastClick.attach(document.body);
+			
+			$('#onePage').onePage({
+				dUrl : serverUrl + '/APP/', //这里需要填写你的域名(*必填项)
+				goHome : function(){
+					//这里需要自己配置一下首页要执行的内容
+					$('#onePage').find('div[data-content]').html($("#login-body").html()) ;//
+				} ,
+				callBack : function(data){
+					//这里是 DOM 操作区域，可以自己定义修改，这里只是 demo
+					$('#onePage').find('div[data-content]').html(data) ;
+				}
+			});
+			
+			window.location.href = "#!/home.html";
+			
+			/*if(null == lognId){
+				window.location.href = "#!/login.html"; 
+			}else{
+				localStorage.setItem("token", lognId);
+				window.location.href = "#!/user_center.html"; 
+			}*/
+		});
+	</script>
+</head>
+<body>
+    <div id="onePage">
+        <div class="main-containe" data-content>
+        </div>
+    </div>
+</body>
+</html>

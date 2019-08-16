@@ -1,0 +1,74 @@
+<div class="head">
+	<a href="#!/shop/confirm_order.html" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	收货地址管理
+</div>
+<div class="containe-h">
+	<a href="#!/shop/add_address.html" class="add-address">
+		<img src="img/icon/addition_fill.png" />添加收货地址
+	</a>
+	<div id="addressList">
+		
+	</div>
+	<!--<div class="address-info" data-id="">
+		<div class="address-info-group">
+			<p>收货人：<span>李天龙</span></p>
+			<p>电话：<span>15571052563</span></p>
+		</div>
+		<div class="address-info-group">
+			地址：<span>青龙省白虎市玄武区凤凰大道301号</span>
+		</div>
+		<span class="address-label"></span>
+	</div>
+	<div class="address-info" data-id="">
+		<div class="address-info-group">
+			<p>收货人：<span>李天龙</span></p>
+			<p>电话：<span>15571052563</span></p>
+		</div>
+		<div class="address-info-group">
+			地址：<span>青龙省白虎市玄武区凤凰大道301号</span>
+		</div>
+	</div>-->
+</div>
+<script>
+	$(function(){
+		getMyAddress();
+	});
+	/**
+     * 获取置顶的商品列表
+	 */
+   function getMyAddress() {
+		_get(Interf.getMyAddress,{},function(result){
+		   if(result.code == 200){
+				 var html = "";
+				 $.each(result.data,function (i,j) {
+				 	var isDf = "";
+				 	//如果是默认地址加标签
+				 	if(j.isDf == 1){
+				 		isDf = '<span class="address-label"></span>';
+				 	}
+				 	
+					html +=	'<div onclick="selectAddress(this)" class="address-info" data-id="' + j.id + '">' +
+					'<div class="address-info-group">' +
+					'<p>收货人：<span>' + j.linkName + '</span></p>' +
+					'<p>电话：<span>' + j.linkPhone + '</span></p></div>' +
+					'<div class="address-info-group">' +
+					'地址：<span>' + j.linkCity + " " + j.linkStreet + '</span>' +
+					'</div>' + isDf + '</div>';
+					
+				 });
+				 $("#addressList").append(html);
+		   } else if(result.code == 401){
+			  window.location.href = "#!/login.html"; 
+		   } else {
+			  notice(result.message);
+		   }			   
+		},true);
+   }
+   
+   function selectAddress(obj){
+   		addressId = $(obj).data("id");
+   		window.location.href = "#!/shop/confirm_order.html"; 
+   }
+</script>

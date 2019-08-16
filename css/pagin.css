@@ -1,0 +1,42 @@
+.pagin {
+  margin: 0 auto;
+  overflow: hidden;
+  /* max-width: 23rem; */
+  color: #535252;
+  font-size: 1.3rem;
+}
+
+.pagin span {
+  float: left;
+}
+
+.pagin #firstPage,
+.pagin #prePage {
+  font-size: 1.3rem;
+}
+
+.pagin #firstPage,
+.pagin #prePage {
+  margin-right: 0.5rem;
+}
+
+.pagin #nextPage {
+  margin-left: 0.5rem;
+}
+
+.pagin .group {
+  margin: 0;
+  float: left;
+  padding: 0;
+}
+
+.pagin .group .item {
+  list-style: none;
+  float: left;
+  width: 0.5rem;
+  padding: 0 0.5rem;
+}
+
+.current {
+  color: red;
+}

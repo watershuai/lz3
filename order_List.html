@@ -1,0 +1,162 @@
+<link rel="stylesheet" href="css/order_List.css">
+<div class="head">
+  <span class="back-btn" onclick="back()">
+    <img src="img/left.png" />
+  </span>
+  订单列表
+</div>
+<div class="order_list" id="wrapper">
+  <div id="minirefresh" class="minirefresh-wrap">
+    <div class="minirefresh-scroll">
+      <ul class="message-grid" id="tradeList">
+     <!--   <li>
+                    <div class="message-top">
+                        <div class="message-icon">
+                            <img src="/img/1_01.png" />
+                        </div>
+                        <div class="message-info">
+                            <div class="message-title">
+                                <span class="title">啊安慰安慰安抚的</span>
+                                <span class="message-time">2018-02-03</span>
+                            </div>
+                            <div class="message-content">订单编号：121212313</div>
+                            <div class="message-content">
+                                <span>单价：21212</span>
+                                <span>数量：1212</span>
+                                <span>总额：1212</span>
+                            </div>
+                            <div class="message-content">
+                                <span>积分：2121</span>
+                                <span>服务费：21212</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>-->
+      </ul>
+    </div>
+  </div>
+</div>
+<script>
+  function back(event) {
+    window.history.go(-1)
+  }
+
+  var pageNo = 1,
+    pageSize = 7,
+    pageData = 0;
+  //requestDelayTime = 600;
+  // 引入任何一个主题后，都会有一个 MiniRefresh 全局变量
+  /*var miniRefresh = new MiniRefresh({
+    container: '#minirefresh',
+    down: {
+      callback: function () {
+        // 下拉事件
+        setTimeout(function () {
+          // 每次下拉刷新后，上拉的状态会被自动重置
+          Refresh();
+          if (pageNo == 1) {
+            miniRefresh.endDownLoading();
+          }
+          miniRefresh.endUpLoading();
+        });
+      }
+    },
+    up: {
+      callback: function () {
+        setTimeout(function () {
+          Load();
+          if (pageNo == 1) {
+            miniRefresh.endDownLoading();
+          }
+          miniRefresh.endUpLoading(pageData == 0 ? true : false);
+        });
+      }
+    }
+  });*/
+  getOrderList();
+
+  /**
+   * 获取已付款订单详情
+   */
+  function getOrderList() {
+      var  picImg="";
+      var phone2="";
+
+
+
+     _post(shopUrls.my_shop, {}, function (result2) {
+         //picImg=result2.picUrl1;
+         phone2=result2.phone;
+     });
+    _post(shopUrls.order_list, {
+      orderStatus: "11",
+      pageNo: pageNo,
+      pageSize: pageSize
+    }, function (result) {
+      console.log(result.list)
+      // if (result.code == 200) {
+      var html = "";
+
+      pageData = result.list.length;
+      console.log(pageData)
+      console.log(pageNo)
+      if (pageNo == 1) {
+        $("#tradeList").empty();
+      }
+
+      $.each(result.list, function (i, j) {
+        // var money = j.money;
+        // if (money > 0) {
+        //   money = "+" + money;
+        // }
+        // html += '<li><div class="message-icon">' +
+        //     '<img src="img/trade/trade' + j.typeCode + '.png" /></div>' +
+        //     '<div class="message-info"><div class="message-title">' +
+        //     '<span class="price">' + money + '</span>' +
+        //     '<span class="message-time">' + j.createTime + '</span></div>' +
+        //     '<div class="message-content">' + j.content + '</div></div></li>';
+        html +=
+            " <li>" +
+          "<div class=\"message-top\">" +
+          "<div class=\"message-icon\">" +
+          "<img src=\"http://47.102.197.243/ADMIN-789/"+j.userCord+"\" />" +
+          "</div>" +
+          "<div class=\"message-info\">" +
+          "<div class=\"message-title\">" +
+          "<span class=\"title\">"+j.itemName+"</span>" +
+          "<span class=\"message-time\">"+j.orderTime+"</span>" +
+          "</div>" +
+          "<div class=\"message-content\">订单编号:"+j.orderNo+"</div>" +
+          "<div class=\"message-content\">" +
+          "<span>单价:"+j.price+"</span>" +
+          "<span>数量:"+j.itemNum+"</span>" +
+          "<span>总额:"+j.totalMoney+"</span>" +
+          "</div>" +
+          "<div class=\"message-content\">" +
+          "<span>积分:"+j.sendScore+"</span>" +
+          "<span>服务费:"+j.itemPic+"</span>" +
+          "</div>" +
+          "<div class=\"message-content\">会员手机号:"+j.address+"</div>" +
+          "</div>" +
+          "</div>" +
+          "</li>"
+      });
+      $("#tradeList").append(html);
+      // } else if (result.code == 401) {
+      //     window.location.href = "#!/login.html";
+      // } else {
+      //     notice(result.message);
+      // }
+    }, true);
+  }
+
+  function Refresh() {
+    pageNo = 1;
+    getOrderList();
+  }
+
+  function Load() {
+    pageNo += 1;
+    getOrderList();
+  }
+</script>

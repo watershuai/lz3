@@ -1,0 +1,150 @@
+<div class="head">
+  <a href="#!/user_center.html" class="back-btn">
+    <img src="img/left.png" />
+  </a>
+  实名认证
+</div>
+<div class="con">
+  <div class="real-div">
+    <div class="input-group">
+      <label class="input-title">真实姓名</label>
+      <input type="text" class="login-input" id="name" />
+    </div>
+    <div class="input-group">
+      <label class="input-title">身份证号</label>
+      <input type="text" class="login-input" id="cardNumber" />
+    </div>
+    <div class="input-group">
+      <label class="input-title">所在地区</label>
+      <input type="text" class="login-input" readonly="readonly" id="address" />
+    </div>
+  </div>
+  <div class="card-div">
+    <div class="card-title">请确保照片内的证件文字清晰</div>
+    <div class="card-show">
+      <input type="file" capture="camera" id="btn_file" style="display:none" onchange="updateImg(this);" typeId="1">
+      <a class="card-z" href='javascript:void(0);' onclick="btnImg(1);"><img src="img/card-z.png"
+          id="cardFrontImg" /></a>
+      <a class="card-f" href='javascript:void(0);' onclick="btnImg(2);"><img src="img/card-f.png"
+          id="cardAfterImg" /></a>
+      <a class="card-c" href='javascript:void(0);' onclick="btnImg(3);"><img src="img/card-c.png"
+          id="cardFrontHandImg" /></a>
+    </div>
+    <a class="card-btn" href="javascript:submitReal();" id="submitReal">
+      提交认证
+    </a>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    $("#address").cityPicker({
+      title: "选择省市区/县",
+      onChange: function (picker, values, displayValues) {}
+    });
+  });
+
+  function btnImg(typeId) {
+    $('#btn_file').click();
+    $('#btn_file').attr("typeId", typeId);
+  }
+
+  function updateImg(obj) {
+    ImgToBase64(obj, 400, function (data) {
+      if ($('#btn_file').attr("typeId") == "1") {
+        $(".card-z").find("img").attr("src", data);
+      } else if ($('#btn_file').attr("typeId") == "2") {
+        $(".card-f").find("img").attr("src", data);
+      } else {
+        $(".card-c").find("img").attr("src", data);
+      }
+    });
+  }
+
+  function ImgToBase64(file, maxLen, callBack) {
+    file = file.files[0];
+
+    var img = new Image();
+
+    var reader = new FileReader(); //读取客户端上的文件
+    reader.onload = function () {
+      var url = reader.result; //读取到的文件内容.这个属性只在读取操作完成之后才有效,并且数据的格式取决于读取操作是由哪个方法发起的.所以必须使用reader.onload，
+      img.src = url; //reader读取的文件内容是base64,利用这个url就能实现上传前预览图片
+    };
+    img.onload = function () {
+      //生成比例
+      var width = img.width,
+        height = img.height;
+      //计算缩放比例
+      var rate = 1;
+      if (width >= height) {
+        if (width > maxLen) {
+          rate = maxLen / width;
+        }
+      } else {
+        if (height > maxLen) {
+          rate = maxLen / height;
+        }
+      };
+      img.width = width * rate;
+      img.height = height * rate;
+      //生成canvas
+      var canvas = document.createElement("canvas");
+      var ctx = canvas.getContext("2d");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      var base64 = canvas.toDataURL('image/png', 0.9);
+      callBack(base64);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function submitReal() {
+    if ($("#name").val() == null || $("#name").val() == "") {
+      notice("请输入姓名!");
+      return;
+    }
+    if ($("#cardNumber").val() == null || $("#cardNumber").val() == "") {
+      notice("请输入身份证号!");
+      return;
+    }
+    if ($("#address").val() == null || $("#address").val() == "") {
+      notice("请输入地址信息!");
+      return;
+    }
+    if ($("#cardFrontImg").attr("src") == "img/card-z.png") {
+      notice("请上传身份证正面照!");
+      return;
+    }
+    if ($("#cardAfterImg").attr("src") == "img/card-f.png") {
+      notice("请上传身份证反面照!");
+      return;
+    }
+    if ($("#cardFrontHandImg").attr("src") == "img/card-c.png") {
+      notice("请上传手持身份证照!");
+      return;
+    }
+    var param = {
+      name: $("#name").val(),
+      cardNumber: $("#cardNumber").val(),
+      address: $("#address").val(),
+      cardFrontImg: $("#cardFrontImg").attr("src"),
+      cardAfterImg: $("#cardAfterImg").attr("src"),
+      cardFrontHandImg: $("#cardFrontHandImg").attr("src")
+    }
+    _post(Interf.saveXingzhexqUserRealApprove, param, function (result) {
+      if (result.code == 200) {
+        success2("提交成功");
+        $("#submitReal").html("待审核");
+        $("#submitReal").attr('disabled', "true");
+        window.location.href = "#!/user_center.html";
+        //$("#nickName").html(result.data.nickName);
+      } else if (result.code == 401) {
+        window.location.href = "#!/login.html";
+      } else {
+        notice(result.message);
+      }
+    }, true);
+  }
+</script>

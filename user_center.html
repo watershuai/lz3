@@ -1,0 +1,413 @@
+<div class="containe">
+  <a href="#!/user_info.html">
+    <div class="user-head">
+      <div class="user-photo">
+        <img src="img/user1.jpg" id="headImg" />
+      </div>
+      <div class="user-name">
+        <span id="nickName">蓝钻会员</span>
+      </div>
+      <div class="user-id">
+        ID <font id="inviteCode">000000</font>
+      </div>
+    </div>
+  </a>
+  <ul class="tool-text-menu">
+    <li>
+      <p class="menu-title">可用积分</p>
+      <p class="menu-num" id="score">0</p>
+    </li>
+    <li>
+      <p class="menu-title">未到账积分</p>
+      <p class="menu-num" id="notArriveScore">0</p>
+    </li>
+    <li>
+      <p class="menu-title">我的计划</p>
+      <p class="menu-num" id="plan">0</p>
+    </li>
+    <li>
+      <p class="menu-title">钻值</p>
+      <p class="menu-num" id="movementMoney">0.00</p>
+    </li>
+  </ul>
+  <div class="is_shops">
+    <!-- <ul class="tool-text-menu">
+			<li>
+				<p class="menu-title">商铺蓝钻余额</p>
+				<p class="menu-num" id="score">0</p>
+			</li>
+			<li>
+				<p class="menu-title">历史蓝钻</p>
+				<p class="menu-num" id="notArriveScore">0</p>
+			</li>
+			<li>
+				<p class="menu-title">意向金总额</p>
+				<p class="menu-num" id="plan">0</p>
+			</li>
+			<li>
+				<p class="menu-title">订单数</p>
+				<p class="menu-num" id="movementMoney">0</p>
+			</li>
+		</ul> -->
+  </div>
+  <ul class="tool-text-menu">
+    <li style="width: 100%">
+      <div class="menu-title" style=" float: left;margin-left: 5%;">我的钱包地址 </div>
+      <div class="pool-copy-btn" style=" float: right;margin-right: 5%;">复制地址</div>
+      <p class="menu-num" id="walletAddress"></p>
+    </li>
+  </ul>
+  <div class="grid-menu small">
+    <li onclick="goUrl(this)" data-status="0">
+      <img src="img/icon/daifukuan.png" />
+      <p>待付款</p>
+      <span id="shopOrders0"></span>
+    </li>
+    <li onclick="goUrl(this)" data-status="1">
+      <img src="img/icon/shijian.png" />
+      <p>待发货</p>
+      <span id="shopOrders1"></span>
+    </li>
+    <li onclick="goUrl(this)" data-status="2">
+      <img src="img/icon/daishouhuo.png" />
+      <p>待收货</p>
+      <span id="shopOrders2"></span>
+    </li>
+    <li onclick="goUrl(this)" data-status="3">
+      <img src="img/icon/hezuo.png" />
+      <p>已完成</p>
+      <span id="shopOrders3"></span>
+    </li>
+  </div>
+  <div>
+    <img src="img/banner/banner5.png" width="100%" />
+  </div>
+  <!--<p class="pool-code" id="walletAddress"></p>-->
+  <!--<span class="pool-copy-btn">复制地址</span>-->
+  <ul class="tool-menu">
+    <a id="my_money" href="#!/transfer_accounts.html">
+      <li><img class="menu-icon" src="img/icon/qian.png" />会员转钻<span id="money">0.00</span></li>
+    </a>
+    <a id="shangjia_money" href="#!/shopTransfer_accounts.html">
+      <li><img class="menu-icon" src="img/icon/qian.png" />商家转钻<span id="shangjiamoney">0.00</span></li>
+    </a>
+    <!--<a href="#!/user_invitation_record.html" ><li><img class="menu-icon" src="img/icon/cart.png" />收益记录</li></a>-->
+    <a href="#!/trade_accounts.html">
+      <li><img class="menu-icon" src="img/icon/shaogouwu.png" />交易记录</li>
+    </a>
+    <a href="#!/score_accounts.html">
+      <li><img class="menu-icon" src="img/icon/cart.png" />积分记录</li>
+    </a>
+    <a id="my_proxy" href="#!/my_proxy.html">
+      <li><img class="menu-icon" src="img/icon/proxy.png" />我的代理</li>
+    </a>
+    <!--<a href="#!/transfer_accounts.html" ><li><img class="menu-icon" src="img/icon/gaoxiaofei.png" />蓝钻发送</li></a>-->
+  </ul>
+
+  <ul class="tool-menu">
+    <a href="#!/my_mill.html">
+      <li><img class="menu-icon" src="img/icon/youji.png" />我的计划</li>
+    </a>
+    <a href="#!/my_team.html">
+      <li><img class="menu-icon" src="img/icon/zonghe.png" />我的团队</li>
+    </a>
+    <a id="real_name" href="#!/real_name.html">
+      <li><img class="menu-icon" src="img/icon/iconfontmingpian.png" />实名认证<span id="isNameReal"></span></li>
+    </a>
+  </ul>
+
+  <ul class="tool-menu">
+    <a href="#!/invite.html">
+      <li><img class="menu-icon" src="img/icon/dingdanzonge.png" />推广奖励</li>
+    </a>
+    <a id="ruzhu2" href="#!/bus_entry.html">
+      <li id="ruzhu"><img class="menu-icon" src="img/icon/gaoxiaofei.png" />商家入驻</li>
+    </a>
+    <a href="#!/order_ListShop.html">
+      <li id="dingdanliebiao"><img class="menu-icon" src="img/icon/cart.png" />订单列表</li>
+    </a>
+    <a href="#!/order_ListShop.html">
+      <li id="wodedingdan"><img class="menu-icon" src="img/icon/wxbmingxingdianpu.png" />我的订单</li>
+    </a>
+    <a href="#!/order_List.html">
+      <li id="shangpudingdan"><img class="menu-icon" src="img/icon/cart.png" />商铺订单</li>
+    </a>
+    <a href="#!/commodity_show.html">
+      <li id="zuodan"><img class="menu-icon" src="img/icon/qian.png" />商家做单</li>
+    </a>
+  </ul>
+<!--  <ul class="tool-menu">-->
+<!--    -->
+<!--  </ul>-->
+<!--  &lt;!&ndash; <ul class="tool-menu">-->
+<!--    <a href="#!/shop_show.html">-->
+<!--      <li><img class="menu-icon" src="img/icon/dixiaofei.png" />店铺展示</li>-->
+<!--    </a>-->
+<!--  </ul> &ndash;&gt;-->
+<!--  <ul class="tool-menu">-->
+<!--    -->
+<!--  </ul>-->
+
+  <!-- <ul class="tool-menu">
+    <a href="#!/bus_center.html">
+      <li><img class="menu-icon" src="img/icon/dixiaofei.png" />商人中心</li>
+    </a>
+  </ul> -->
+<!--  <ul class="tool-menu">-->
+<!--    <a href="#!/commodity_show.html">-->
+<!--      <li><img class="menu-icon" src="img/icon/dixiaofei.png" />商品展示</li>-->
+<!--    </a>-->
+<!--  </ul>-->
+<!--  <ul class="tool-menu">-->
+<!--    <a href="#!/shop_detail.html">-->
+<!--      <li><img class="menu-icon" src="img/icon/dixiaofei.png" />店铺详情</li>-->
+<!--    </a>-->
+<!--  </ul>-->
+</div>
+<ul class="bottom-nav">
+  <a href="#!/home.html">
+    <li>
+      <img src="img/icon/home.png" />
+      <p>首页</p>
+    </li>
+  </a>
+  <a href="#!/shop/shop_index.html">
+    <li>
+      <img src="img/icon/shop.png" />
+      <p>商城</p>
+    </li>
+  </a>
+  <a href="#!/my_message.html">
+    <li>
+      <img src="img/icon/mark.png" />
+      <p>消息</p>
+    </li>
+  </a>
+  <a href="#!/user_center.html">
+    <li class="active">
+      <img src="img/icon/my_fill_light.png" />
+      <p>我的</p>
+    </li>
+  </a>
+</ul>
+<script type="text/javascript">
+  var clipboard = new ClipboardJS('.pool-copy-btn', {
+    text: function () {
+      return $("#walletAddress").html();
+    }
+  });
+
+  clipboard.on('success', function (e) {
+    notice("复制成功!");
+  });
+  _get(Interf.getUser, {}, function (result) {
+    if (result.code == 200) {
+      if (result.data.headImg != null && result.data.headImg != "") {
+        $("#headImg").html(result.data.headImg); // 用户头像
+      }
+      $("#inviteCode").html(result.data.inviteCode); // 用户昵称
+      $("#walletAddress").html(result.data.walletAddress);
+     /* if (result.data.money > 0) {
+        $("#money").html(changeTwoDecimal_f(result.data.money));
+      }*/
+
+      if (result.data.score > 0) {
+        $("#score").html(result.data.score);
+      }
+      $("#notArriveScore").html(result.data.notArriveScore);
+
+      //验证当前实名认证状态，只有未认证的状态才能跳入认证页面
+      if (result.data.isNameReal == 0) {
+        $("#isNameReal").html("未认证");
+        $("#real_name").attr("href", "#!/real_name.html");
+      }
+
+      if (result.data.isNameReal == 1) {
+        $("#isNameReal").html("审核中");
+        $("#real_name").attr("href", "javascript:void(0)");
+      }
+
+      if (result.data.isNameReal == 2) {
+        $("#isNameReal").html("已认证");
+        $("#real_name").attr("href", "javascript:void(0)");
+      }
+      //验证是否为代理商
+      if (result.data.agentType == 1) {
+        // $("#isNameReal").html("未认证");
+        $("#my_proxy").css("display", "none");
+      }
+      //验证是否为代理商
+      if (result.data.moneyreType == 1) {
+        // $("#isNameReal").html("未认证");
+        $("#my_money").css("display", "none");
+      }
+      //$("#nickName").html(result.data.nickName);
+    } else if (result.code == 401) {
+      window.location.href = "#!/login.html";
+    } else {
+      notice(result.message);
+    }
+  });
+
+  function noMsg() {
+    notice("待开放!");
+  }
+
+  _get(Interf.getNowMoney, {}, function (result) {
+    if (result.result.code == 200) {
+      $("#movementMoney").html(result.result.data.nowMoney);
+    }
+  });
+
+  //获取订单状态统计
+  _get(shopUrls.getMyAllByOrderStatus, {}, function (result) {
+    if (result.code == 200) {
+      $("#shopOrders0").html(result.data.shopOrders0);
+      $("#shopOrders1").html(result.data.shopOrders1);
+      $("#shopOrders2").html(result.data.shopOrders2);
+      $("#shopOrders3").html(result.data.shopOrders3);
+    }
+  });
+
+  //获取正在生效的计划
+  _get(Interf.getMyPointPlan, {}, function (result) {
+    if (result.code == 200 && result.data.size !== null) {
+      $("#plan").html(result.data.size);
+    }
+  });
+
+  function goUrl(obj) {
+    topOrderStatus = $(obj).data("status");
+    window.location.href = "#!/my_orders.html";
+  }
+</script>
+
+<script>
+    function _get(url, data, callback, isLoading, content) {
+        data.token = localStorage.getItem("token"); //$.cookie('token');
+        var loadingObj;
+        $.ajax({
+            type: "GET",
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: "json",
+            url: url,
+            data: data,
+            cache:false,
+            beforeSend: function () {
+                if (isLoading) {
+                    loadingObj = loading(content != undefined ? content : "加载中...")
+                };
+            },
+            success: function (data) {
+                typeof callback == 'function' && callback(data);
+            },
+            error: function (data) {
+                error("访问异常");
+            },
+            complete: function () {
+                // 此处关闭加载信息
+                if (isLoading) {
+                    loadingObj.close()
+                };
+            }
+        });
+    }
+    _get(Interf.getUser, {}, function (result) {
+        if (result.data.money > 0) {
+            $("#money").html(changeTwoDecimal_f(result.data.money));
+        }
+    })
+</script>
+
+<script>
+  // 复写 post
+  function _post(url, data, callback, isLoading, content) {
+    data.token = localStorage.getItem("token"); //
+    var loadingObj;
+    $.ajax({
+      type: "POST",
+      contentType: 'application/x-www-form-urlencoded',
+      dataType: "json",
+      url: url,
+      data: data,
+      beforeSend: function () {
+        if (isLoading) {
+          loadingObj = loading(content != undefined ? content : "加载中...")
+        };
+      },
+      success: function (data) {
+        typeof callback == 'function' && callback(data);
+      },
+      error: function (data) {
+        // error("访问异常");
+      },
+      complete: function () {
+        // 此处关闭加载信息
+        if (isLoading) {
+          loadingObj.close()
+        };
+      }
+    });
+  }
+
+  // 获取商铺信息
+  _post(shopUrls.shop_msg, {}, function (result) {
+    // console.log(result)
+      if (result.code == 1){
+          $("#zuodan").css("display", "none");
+          $("#shangjia_money").css("display", "none");
+          $("#wodedingdan").css("display", "none");
+          $("#shangpudingdan").css("display", "none");
+      }else if (result.code == 0){
+
+      } else {
+          $("#dingdanliebiao").css("display", "none");
+          var html = ""
+          html += "<ul class=\"tool-text-menu\">" +
+              "<li>" +
+              "<p class=\"menu-title\">商铺蓝钻余额</p>" +
+              "<p class=\"menu-num\" id=\"score\">" + result.userShopMoney.money + "</p>" +
+              "</li>" +
+              "<li>" +
+              "<p class=\"menu-title\">历史蓝钻</p>" +
+              "<p class=\"menu-num\" id=\"notArriveScore\">" + result.userShopMoney.lslanzuan + "</p>" +
+              "</li>" +
+              "<li>" +
+              "<p class=\"menu-title\">意向金总额</p>" +
+              "<p class=\"menu-num\" id=\"plan\">" + result.userShopMoney.yxj + "</p>" +
+              "</li>" +
+              "<li>" +
+              "<p class=\"menu-title\">订单数</p>" +
+              "<p class=\"menu-num\" id=\"movementMoney\">" + result.userShopMoney.orderNum + "</p>" +
+              "</li>" +
+              "</ul>"
+          var obj = document.getElementById("ruzhu");
+          obj.innerHTML = "<img class=\"menu-icon\" src=\"img/icon/shaogouwu.png\" />" + "我的店鋪";
+          $(".is_shops").append(html);
+          $("#shangjiamoney").html(changeTwoDecimal_f(result.userShopMoney.money));
+          _post(shopUrls.my_shop, {}, function (result2) {
+              var aObj = document.getElementById("ruzhu2");
+              aObj.href=`/index.html#!/shop_detail.html?id=`+result2.id;
+              localStorage.setItem("pic", result2.picUrl1);
+              //$("#headImg").html("http://47.102.197.243/ADMIN-789/"+result.picUrl1);
+              //document.getElementById("headImg").src="http://47.102.197.243/ADMIN-789/"+result2.picUrl1;
+          });
+          //根据id获取超链接,设置href属性
+         /* var aObj = document.getElementById("ruzhu2");
+          aObj.href= "#!/shop_show.html";*/
+
+      }
+  });
+
+
+
+  function afterAddRes() {
+      const lis = $(".shop_list li")
+      for (let i = 0; i<lis.length; i++){
+          lis.eq(i).click(function () {
+              const hrefVal =  `/index.html#!/shop_detail.html?id=${lis.eq(i).attr('id')}`
+              window.location.href = hrefVal
+          })
+      }
+  }
+</script>

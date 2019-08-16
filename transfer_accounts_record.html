@@ -1,0 +1,110 @@
+<div class="head">
+	<a href="#!/user_center.html" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	转账记录
+</div>
+<div class="con" id="wrapper">
+	<ul class="dui-log-list">
+	</ul>
+</div>
+
+<script>
+	var pageNo = 1,
+		pageSize = 15;
+	_get(Interf.getRollOutRecordPage, {
+		pageNo: pageNo,
+		pageSize: pageSize
+	}, function(result) {
+		if(result.code == 200) {
+			$(".dui-log-list").empty();
+			var html = "";
+			$.each(result.data, function(i, j) {
+				var amout = j.amout;
+			 	if(amout > 0){
+			 		amout = "+" + amout
+			 	}
+				
+				html += '	<li class="list-detail">' + j.collectUserMobile +
+					'	<span class="detail-time">' + j.dateTime + '</span>' +
+					'	<span class="detail-z">' + amout + '</span>                  ' +
+					'</li>                                                ';
+			});
+			$(".dui-log-list").append(html);
+		} else if(result.code == 401) {
+			window.location.href = "#!/login.html";
+		} else {
+			notice(result.message);
+		}
+	});
+
+	refresher.init({
+		id: "wrapper",
+		pullDownAction: Refresh,
+		pullUpAction: Load
+	});
+	var generatedCount = 0;
+
+	function Refresh() {
+		pageNo = 1;
+		setTimeout(function() {
+			_get(Interf.getRollOutRecordPage, {
+				pageNo: pageNo,
+				pageSize: pageSize
+			}, function(result) {
+				if(result.code == 200) {
+					$(".dui-log-list").empty();
+					var html = "";
+					$.each(result.data, function(i, j) {
+						var amout = j.amout;
+					 	if(amout > 0){
+					 		amout = "+" + amout
+					 	}
+						
+						html += '	<li class="list-detail">' + j.collectUserMobile +
+							'	<span class="detail-time">' + j.dateTime + '</span>' +
+							'	<span class="detail-z">' + amout + '</span>                  ' +
+							'</li>                                                ';
+					});
+					$(".dui-log-list").append(html);
+					myScroll.refresh();
+				} else if(result.code == 401) {
+					window.location.href = "#!/login.html";
+				} else {
+					notice(result.message);
+				}
+			});
+		}, 1000);
+	}
+	
+	function Load() {
+		pageNo += 1;
+		setTimeout(function() {
+			_get(Interf.getRollOutRecordPage, {
+				pageNo: pageNo,
+				pageSize: pageSize
+			}, function(result) {
+				if(result.code == 200) {
+					var html = "";
+					$.each(result.data, function(i, j) {
+						var amout = j.amout;
+					 	if(amout > 0){
+					 		amout = "+" + amout
+					 	}
+						
+						html += '	<li class="list-detail">' + j.collectUserMobile +
+							'	<span class="detail-time">' + j.dateTime + '</span>' +
+							'	<span class="detail-z">' + amout + '</span>                  ' +
+							'</li>                                                ';
+					});
+					$(".dui-log-list").append(html);
+					myScroll.refresh();
+				} else if(result.code == 401) {
+					window.location.href = "#!/login.html";
+				} else {
+					notice(result.message);
+				}
+			});
+		}, 1000);
+	}
+</script>

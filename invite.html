@@ -1,0 +1,48 @@
+<div class="invite-bg">
+	<div class="hyaline-head">
+		<a href="#!/user_center.html" class="back-btn">
+			<img src="img/left.png" />
+		</a>
+		邀请好友
+		<a class="invite-btn">
+			<img src="img/invite.png" />
+		</a>
+	</div>
+	<div class="app-name">
+		蓝钻网
+	</div>
+	<div class="app-content">
+		科技互联 改变生活
+	</div>
+	<div class="invite-div">
+		<p class="code-title">邀请码</p>
+		<p class="code-content" id="inviteCode">256785</p>
+		<p class="invite-content">邀请你加入蓝钻网</p>
+		<p class="invite-content1">多重惊喜等你来领！</p>
+		<!--<p class="invite-content2">现在加入，额外赠送1台微型挖收集器！</p>-->
+		<p class="invite-content2">邀请好友加入可得好友蓝钻产出3%奖励！</p>
+		<div class="invite-qrcode">
+			<img src="" id="imgPath"/>
+			<p class="qrcode-content">长按识别去注册</p>
+		</div>
+	</div>
+</div>
+<script>
+    getUser();
+    /**
+     * 获取用户信息
+	 */
+   function getUser() {
+		_get(Interf.getUser,{},function(result){
+		   if(result.code == 200){
+				 $("#inviteCode").html(result.data.inviteCode);
+				 $("#imgPath").attr("src",Interf.produceQR+"?token="+localStorage.getItem("token"));
+		   } else if(result.code == 401){
+			  window.location.href = "#!/login.html"; 
+		   } else {
+			  notice(result.message);
+		   }			   
+		});
+   }   
+
+</script>

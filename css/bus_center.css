@@ -1,0 +1,119 @@
+.bus_center {
+    width: 100%;
+    padding-top: 4rem;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+#wrapper.bus_center {
+    height: calc(100% - 4rem);
+    height: -webkit-calc(100% - 4rem);
+    height: -moz-calc(100% - 4rem);
+    position: absolute;
+    top: 4rem;
+    bottom: 0rem;
+    padding-top: 0rem;
+}
+
+.message-grid {
+    width: calc(100% - 0rem);
+    width: -moz-calc(100% - 0rem);
+    width: -webkit-calc(100% - 0rem);
+    background-color: #FFFFFF;
+    padding: 0;
+}
+
+.message-grid li {
+    width: 100%;
+    border-bottom: 1px solid #EEEEEE;
+    list-style: none;
+    padding: 1rem 0rem 1rem 1rem;
+    position: relative;
+}
+
+.message-grid li:after {
+    display: block;
+    content: " ";
+    clear: both;
+}
+
+.message-grid li .message-icon {
+    width: 5.5rem;
+    float: left;
+}
+
+.message-grid li .message-icon img {
+    width: 100%;
+    border-radius: 0.7rem;
+    width: 5rem;
+}
+
+.message-grid li .message-info {
+    width: calc(100% - 6.5rem);
+    width: -moz-calc(100% - 6.5rem);
+    width: -webkit-calc(100% - 6.5rem);
+    float: left;
+}
+
+.message-grid li .message-info .message-title {
+    font-size: 1.5rem;
+    font-weight: 400;
+    /*height: 2rem;*/
+    line-height: 2rem;
+    color: #333333;
+}
+
+.message-grid li .message-info .message-title .title {
+    font-weight: 600;
+    color: #666666;
+}
+
+.message-grid li .message-info .message-title .message-time {
+    float: right;
+    padding-right: 4px;
+}
+
+.message-grid li .message-info .message-content .message-time {
+    font-size: 1rem;
+    float: right;
+    margin-right: 0.5rem;
+    color: #CCCCCC;
+}
+
+.message-grid li .message-info .message-content {
+    /*
+	position: absolute;
+    */
+    bottom: 0.9rem;
+    font-size: 1.1rem;
+    color: #666666;
+    /*width: 25rem;*/
+    padding-left: 2rem;
+    padding-bottom: 2rem;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* background: rgba(245, 245, 245, 0.5); */
+    background: #f5f6ff;
+    margin-top: 1rem;
+}
+
+.message-grid li .message-info .message-content .message_list {
+    display: flex;
+    margin-top: 2rem;
+}
+
+.message-grid li .message-info .message-content .message_list span {
+    width: 48%;
+    font-size: 1.4rem;
+}
+
+/* 第二版 */
+.message-grid li .message-icon {
+    width: 3.5rem;
+}
+
+.message-grid li .message-icon img {
+    width: 3rem;
+}

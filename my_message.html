@@ -1,0 +1,220 @@
+<ul class="sms-menu">
+	<li onclick="userInfo(this);"  id="userInfo" class="selected">个人信息</li>
+    <li  onclick="noticeInfo(this);" id="noticeInfo">通知公告</li>
+</ul>
+<div class="containe-hf" id="wrapper">
+	<div id="minirefresh" class="minirefresh-wrap">
+        <div class="minirefresh-scroll">
+            <ul class="message-grid" id="messageList">
+
+            </ul>
+        </div>
+    </div>
+	
+	<!--<ul class="message-grid" id="messageList">
+		<li>
+			<div class="message-icon">
+				<img src="img/notice/notice1.png" />
+			</div>
+			<div class="message-info">
+				<div class="message-title">
+					充值到账通知
+					<span class="message-time">2018-11-05</span>
+				</div>
+				<div class="message-content">
+					您充值的3600蓝钻，已经成功到账。
+				</div>
+			</div>
+		</li>
+	</ul>-->
+</div>
+<ul class="bottom-nav">
+	<a href="#!/home.html">
+		<li>
+			<img src="img/icon/home.png" />
+			<p>首页</p>
+		</li>
+	</a>
+	<a href="#!/shop/shop_index.html">
+		<li>
+			<img src="img/icon/shop.png" />
+			<p>商城</p>
+		</li>
+	</a>
+	<a href="#!/my_message.html">
+		<li class="active">
+			<img src="img/icon/markfill.png" />
+			<p>消息</p>
+		</li>
+	</a>
+	<a href="#!/user_center.html">
+		<li>
+			<img src="img/icon/my_light.png" />
+			<p>我的</p>
+		</li>
+	</a>
+</ul>
+
+<script>
+   var messagePageNo = 1, messagePageSize = 10;
+   var noticePageNo = 1, noticePageSize = 10,noticeData = 0;
+   var type = 1;
+   
+    requestDelayTime = 600;
+    
+    getMessage();
+    
+    // 引入任何一个主题后，都会有一个 MiniRefresh 全局变量
+	var miniRefresh = new MiniRefresh({
+	    container: '#minirefresh',
+	    down: {
+	        callback: function() {
+	            // 下拉事件
+	             setTimeout(function() {
+                    // 每次下拉刷新后，上拉的状态会被自动重置
+                    Refresh();
+                    if(messagePageNo == 1){
+					 	miniRefresh.endDownLoading();
+					 }
+                    miniRefresh.endUpLoading();
+                }, requestDelayTime);
+	        }
+	    },
+	    up: {
+	        callback: function() {
+	             setTimeout(function() {
+                	Load();
+                	 if(messagePageNo == 1){
+					 	miniRefresh.endDownLoading();
+					 }
+				 	miniRefresh.endUpLoading(noticeData == 0 ? true : false);
+                }, requestDelayTime);
+	        }
+	    }
+	});
+	
+    /**
+     * 获取用户信息
+	 */
+   function getMessage() {
+		_get(Interf.getMessage,{pageNo:messagePageNo,pageSize:messagePageSize},function(result){
+		   if(result.code == 200){
+				 var html = "";
+				 noticeData = result.data.length;
+				 if(messagePageNo == 1){
+			 		$("#messageList").empty();
+			 	}
+				 $.each(result.data,function (i,j) {
+					html +=	'<li onclick="showMessageInfo(this)" data-id="' + j.id + '"><div class="message-icon">' +
+									'<img src="img/notice/notice' + j.type + '.png" /></div>' +
+									'<div class="message-info"><div class="message-title">' + j.title +
+									'<span class="message-time">' + j.createTime + '</span></div>' +
+									'<div class="message-content">' + j.content + '</div></div></li>';
+				 });
+				 $("#messageList").append(html);
+		   } else if(result.code == 401){
+			  window.location.href = "#!/login.html"; 
+		   } else {
+			  notice(result.message);
+		   }			   
+		},true);
+   }
+   
+   /**
+     * 获取公告信息
+	 */
+   function getNotice() {
+		_get(Interf.getNotice,{pageNo:noticePageNo,pageSize:noticePageSize},function(result){
+		   if(result.code == 200){
+				 var html = "";
+				 
+				 if(noticePageNo == 1){
+				 		$("#messageList").empty();
+				 	}
+					
+				noticeData = result.data.length;
+				 
+				 $.each(result.data,function (i,j) {
+					html +=	'<li onclick="showNoticeInfo(this)" data-id="' + j.id + '"><div class="message-icon">' +
+									'<img src="img/notice/notice1.png" /></div>' +
+									'<div class="message-info"><div class="message-title">' + j.title +
+									'<span class="message-time">' + j.createDate + '</span></div>' +
+									'<div class="message-content">' + j.content + '</div></div></li>';
+				 });
+				 $("#messageList").append(html);
+				 
+				 if(noticePageNo == 1){
+				 	miniRefresh.endDownLoading();
+				 }
+			 	miniRefresh.endUpLoading(result.data.length == 0 ? true : false);
+		   } else if(result.code == 401){
+			  window.location.href = "#!/login.html"; 
+		   } else {
+			  notice(result.message);
+		   }			   
+		},true);
+   }
+	
+	function Refresh(){
+		if(type == 1){
+			messagePageNo = 1;
+			getMessage();
+		}else{
+			noticePageNo = 1;
+			getNotice()
+		}
+	}
+	
+	function Load(){
+		if(type == 1){
+			messagePageNo += 1;
+			getMessage();
+		}else{
+			noticePageNo += 1;
+			getNotice()
+		}
+	}
+	
+   /**
+     * 获取用户信息
+	 */
+   function userInfo(obj) {
+      if (type == 1){
+	     return;
+	  }	  
+	  type = 1;
+      $("#noticeInfo").removeClass("selected");
+	  $("#userInfo").addClass("selected");
+	  getMessage();
+   }
+   
+    /**
+     * 获取公告信息
+	 */
+   function noticeInfo(obj) {
+      if (type == 2){
+	     return;
+	  }
+	  type = 2;
+      $("#noticeInfo").addClass("selected");
+	  $("#userInfo").removeClass("selected");
+	  getNotice();
+   }
+   
+   /**
+     * 查看公告详情
+	 */
+   function showNoticeInfo (obj) {
+       noticeId = $(obj).data("id");
+       window.location.href = "#!/notice_info.html"; 
+   }
+   
+    /**
+     * 查看公告详情
+	 */
+   function showMessageInfo (obj) {
+       messageId = $(obj).data("id");
+       window.location.href = "#!/message_info.html"; 
+   }
+
+</script>

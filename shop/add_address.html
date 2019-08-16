@@ -1,0 +1,96 @@
+<div class="head">
+	<a href="#!/shop/address_manage.html" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	新增收货地址
+</div>
+<div class="containe-hf">
+	<div class="form-contral">
+		<div class="input-group">
+			<label class="input-title">收货小主：</label>
+			<input type="text" class="input-contral" id="linkName" placeholder="请输入收货人姓名" />
+		</div>
+		<div class="input-group">
+			<label class="input-title">联系电话：</label>
+			<input type="text" class="input-contral" id="linkPhone" placeholder="请输入联系电话" />
+		</div>
+		<div class="input-group">
+			<label class="input-title">收货地址：</label>
+			<input type="text" class="input-contral" id="linkCity" readonly="readonly" placeholder="省 市 区" />
+		</div>
+		<div class="input-group">
+			<label class="input-title">街道地址：</label>
+			<input type="text" class="input-contral" id="linkStreet" placeholder="请输入街道地址" />
+		</div>
+	</div>
+
+	<div class="weui-cells weui-cells_form">
+		<div class="weui-cell weui-cell_switch">
+			<div class="weui-cell__bd">是否默认</div>
+			<div class="weui-cell__ft">
+				<input class="weui-switch" id="isDf" type="checkbox">
+			</div>
+		</div>
+	</div>
+</div>
+<a href="javascirpt:void(0)" onclick="addAddress()" class="bottom-submit">保 存</a>
+
+<script>
+	$(function() {
+		$("#linkCity").cityPicker({
+			title: "选择省市区/县",
+			onChange: function(picker, values, displayValues) {}
+		});
+	});
+	
+	function addAddress(){
+		var linkName = $("#linkName").val();
+		var linkPhone = $("#linkPhone").val();
+		var linkCity = $("#linkCity").val();
+		var linkStreet = $("#linkStreet").val();
+		var isDf = 0;
+		if($("#isDf").is(':checked')){
+			isDf = 1;
+		}
+		
+		if(linkName == null || linkName == "") {
+			notice("请输入联系人姓名!");
+			return;
+		}
+		
+		if(linkPhone == null || linkPhone == "") {
+			notice("请输入联系人电话!");
+			return;
+		}
+		
+		if(linkCity == null || linkCity == "") {
+			notice("请选择联系人收货地址!");
+			return;
+		}
+		
+		if(linkStreet == null || linkStreet == "") {
+			notice("请输入联系人街道地址!");
+			return;
+		}
+		
+		var data = {
+		  __ajax:"json",
+		  linkName:linkName,
+		  linkPhone:linkPhone,
+		  linkCity:linkCity,
+		  linkStreet:linkStreet,
+		  isDf:isDf
+		};
+		
+		_post(Interf.addAddress,data,function(result){
+		   if(result.code == 200){
+				success2('保存成功!');
+				window.location.href = "#!/shop/address_manage.html"; 
+		   } else if(result.code == 401){
+			  window.location.href = "#!/login.html"; 
+		   }else{
+			  notice(result.message);
+		   }			   
+		},true);
+	}
+</script>

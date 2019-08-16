@@ -1,0 +1,73 @@
+<div class="head">
+	<a href="#!/user_center.html" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	支付信息
+</div>
+<div class="containe-h">
+	<input type="hidden" id="outTradeNo" value="${outTradeNo}"/>
+	<div class="order-success">
+		<img src="img/order_success.png" />
+		<h3 id="paystatus"></h3>
+		<p  id="paystatusadd" ></p>
+	</div>
+	<div class="order-success-info">
+		<h3>订单信息</h3>
+		<p>订单号码<span id="orderNo">00000000000000</span></p>
+		<p>下单时间<span id="orderTime">1999-12-31  00:00:00</span></p>
+		<p>商户名称<span>蓝钻网</span></p>
+	</div>
+</div>
+<script>
+	$(function(){
+		getOrderInfo();
+		/*//查询订单状态
+        $.confirm("是否成功支付订单？", function () {
+            //设置成功付款状态
+            _post(shopUrls.workcogOrderStatus, {id: result.data.id, orderStatus: 1}, function (result1) {
+                if (result1.code == 200) {
+                    orderId = result1.data.id;
+                    window.location.href = "#!/shop/order_success.html";
+                } else if (result1.code == 401) {
+                    window.location.href = "#!/login.html";
+                } else {
+                    notice(result1.message);
+                }
+            }, true);
+        }, function () {
+            _post(shopUrls.workcogOrderStatus, {id: result.data.id, orderStatus: 1}, function (result1) {
+                if (result1.code == 200) {
+                    orderId = result1.data.id;
+                    window.location.href = "#!/user_center.html";
+                } else if (result1.code == 401) {
+                    window.location.href = "#!/login.html";
+                } else {
+                    notice(result1.message);
+                }
+            }, true);
+
+        });*/
+	});
+	
+	function getOrderInfo(){
+         var orderId=$("#outTradeNo").val();
+   		var data = {id:orderId};
+	   	_get(shopUrls.getOrderInfo,data,function(result){
+		   if(result.code == 200){
+		   		$("#orderNo").html(result.data.orderNo);
+		   		$("#orderTime").html(result.data.orderTime);
+		   		if (result.data.orderStatus=1) {
+                    $("#paystatus").html("支付成功");
+                    $("#paystatusadd").html("您已支付成功，请耐心等待发货");
+				}else if (result.data.orderStatus=0) {
+                    $("#paystatus").html("支付失败");
+                    $("#paystatusadd").html("您已支付失败，请重新购买");
+				}
+		   } else if(result.code == 401){
+			  window.location.href = "#!/login.html"; 
+		   } else {
+			  notice(result.message);
+		   }			   
+		});
+   }
+</script>

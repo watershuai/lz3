@@ -1,0 +1,69 @@
+<div class="head">
+	<a href="#!/user_info.html" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	设置所在地
+	<a href="javascript:submitAddress();" class="last-url">
+		完成
+	</a>
+</div>
+<div class="containe-h">
+	<input class="cogs-input" placeholder="请选择所在地" readonly="readonly" id="address"/>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$("#address").cityPicker({
+	        title: "选择省市区/县",
+	        onChange: function (picker, values, displayValues) {
+	        }
+	    });
+	});
+	
+	_get(Interf.getUser,{},function(result){
+	   if(result.code == 200){
+	   		if(result.data.province == undefined){
+	   			result.data.province = ""
+	   		}
+	   		
+	   		if(result.data.city == undefined){
+	   			result.data.city = ""
+	   		}
+	   		
+	   		if(result.data.area == undefined){
+	   			result.data.area = ""
+	   		}
+	   		
+	   		$("#address").val(result.data.province + " " + result.data.city + " " + result.data.area);
+	   } else if(result.code == 401){
+		  window.location.href = "#!/login.html"; 
+	   } else {
+		  notice(result.message);
+	   }			   
+	});
+	/**
+	  * 修改用户昵称
+	  */
+	function submitAddress() {
+		var address = $("#address").val();
+		var addressData = address.split(" ");
+		/**
+		  * 修改用户昵称
+		  */
+		var data = {
+		  __ajax:"json",
+		  province:addressData[0],
+		  city:addressData[1],
+		  area:addressData[2],
+		};
+		_post(Interf.updateInfo,data,function(result){
+		   if(result.code == 200){
+				success2('修改成功!');
+				window.location.href = "#!/user_info.html"; 
+		   } else if(result.code == 401){
+			  window.location.href = "#!/login.html"; 
+		   }else{
+			  notice(result.message);
+		   }			   
+		},true);
+	}
+</script>

@@ -1,0 +1,38 @@
+<div class="head">
+	<a href="#!/user_center.html" class="back-btn">
+		<img src="img/left.png" />
+	</a>
+	兑换成功
+</div>
+<div class="containe-h">
+	<div class="order-success">
+		<img src="img/order_success.png" />
+		<h3>兑换成功</h3>
+		<p>您已兑换成，请耐心等待发货</p>
+	</div>
+	<div class="order-success-info">
+		<h3>订单信息</h3>
+		<p>订单号码<span id="orderNo"></span></p>
+		<p>下单时间<span id="orderTime"></span></p>
+		<p>商户名称<span></span></p>
+	</div>
+</div>
+<script>
+    $(function(){
+        getOrderInfo();
+    });
+
+    function getOrderInfo(){
+        var data = {id:orderId};
+        _get(shopUrls.getOrderInfo,data,function(result){
+            if(result.code == 200){
+                $("#orderNo").html(result.data.orderNo);
+                $("#orderTime").html(result.data.orderTime);
+            } else if(result.code == 401){
+                window.location.href = "#!/login.html";
+            } else {
+                notice(result.message);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,52 @@
+<div class="login-body">
+	<div class="login-title">
+		<span class="ti1">Hi</span>
+		<span class="ti2">欢迎登录</span>
+	</div>
+	<div class="login-div">
+		<div class="login-input-group">
+			<label class="input-title">用户名</label>
+			<input type="text" id="mobile" class="login-input" name="mobile"/>
+		</div>
+		<div class="login-input-group">
+			<label class="input-title">密&nbsp;&nbsp;&nbsp;码</label>
+			<input type="password" class="login-input" name="password"/>
+		</div>
+		<a href="javascript:login();" class="login-btn"><!--href="#!/user_center.html"-->
+			登 录
+		</a>
+	</div>
+</div>
+<script>
+var mobile=document.URL.split('=')[1];
+document.getElementById('mobile').value=mobile;
+
+
+    function login() {
+		var mobile = $("input[name='mobile']").val();
+		var password = $("input[name='password']").val();
+		if (mobile == null || mobile == '') {
+           notice("手机号不能为空!");
+		   return;
+		}
+		if (password == null || password == '') {
+		   notice("密码不能为空!");
+		   return;
+		}
+		var data = {
+		  __ajax:"json",
+		  mobile:mobile,
+		  password:password,
+		  isNewRecord:"true"
+		}
+		_post(Interf.laobanlogin,data,function(result){
+		   if(result.code == 200){
+			  localStorage.setItem("token", result.data);
+			  window.location.href = "#!/user_center.html"; 
+		   } else{
+			  notice(result.message);
+		   }			   
+		},true);
+		
+	}
+</script>

@@ -1,0 +1,191 @@
+<div class="sms-bg">
+	<ul class="sms-menu">
+	    <li  onclick="noticeInfo(this);" id="noticeInfo" class="selected">通知公告</li>
+		<li onclick="userInfo(this);"  id="userInfo">个人信息</li>
+	</ul>
+	<div id="content">
+		<!--<div class="sms-div">
+			<div class="sms-title">
+				挖宝活动
+				<div class="sms-time">
+					08.28 23:10
+				</div>
+			</div>
+			<div class="sms-content">
+				全民比特币活动异常火爆，报名人数超预期，本次活动将于2018年09月......
+			</div>
+			<div class="sms-detail">
+				<a href="#!/notice_info.html">查看详情 ></a>
+			</div>
+		</div>
+		
+		<div class="sms-div">
+			<div class="sms-title">
+				挖宝活动
+				<div class="sms-time">
+					08.28 23:10
+				</div>
+			</div>
+			<div class="sms-content">
+				全民比特币活动异常火爆，报名人数超预期，本次活动将于2018年09月......
+			</div>
+			<div class="sms-detail">
+				<a href="#!/notice_info.html">查看详情 ></a>
+			</div>
+		</div>
+		
+		<div class="sms-div">
+			<div class="sms-title">
+				挖宝活动
+				<div class="sms-time">
+					08.28 23:10
+				</div>
+			</div>
+			<div class="sms-content">
+				全民比特币活动异常火爆，报名人数超预期，本次活动将于2018年09月......
+			</div>
+			<div class="sms-detail">
+				<a href="#!/notice_info.html">查看详情 ></a>
+			</div>
+		</div>-->
+	</div>
+</div>
+
+<div class="foot">
+	<ul class="foot-menu">
+	    <a href="#!/user_index.html">
+			<li>
+				<img src="img/1_01.png" />
+				<p>首页</p>
+			</li>
+		</a>
+		<a href="#!/message.html">
+			<li class="selected">
+				<img src="img/1_02_1.png" />
+				<p>信息</p>
+			</li>
+		</a>
+		<!--<li>
+			<img src="img/1_03.png" />
+			<p>交易</p>
+		</li>-->
+		<a href="#!/mill_shop.html">
+			<li>
+				<img src="img/1_04.png" />
+				<p>商城</p>
+			</li>
+		</a>
+		<a href="#!/user_center.html">
+			<li>
+				<img src="img/1_05.png" />
+				<p>我的</p>
+			</li>
+		</a>
+	</ul>
+</div>
+<script>
+    getNotice();//初始化公告信息
+   /**
+     * 获取公告信息
+	 */
+   function getNotice() {
+        var pageNo = 1, pageSize = 10;
+		_get(Interf.getNotice,{pageNo:pageNo,pageSize:pageSize},function(result){
+		   if(result.code == 200){
+				 var html = "";
+				 $.each(result.data,function (i,j) {
+					html +=	'<div class="sms-div">                                                   '
+							+'	<div class="sms-title">                                                 '
+							+'		'+j.title+'                                                            '
+							+'		<div class="sms-time">                                              '
+							+'			'+j.createDate+'                                                     '
+							+'		</div>                                                              '
+							+'	</div>                                                                  '
+							+'	<div class="sms-content">                                               '
+							+'		'+j.content.substr(0,32)+'......'
+							+'	</div>                                                                  '
+							+'	<div class="sms-detail">                                                '
+							+'		<a href="javascript:goUrl(\''+j.id+'\')" style="text-decoration:none;color:#777">查看详情 </a>              '
+							+'	</div>                                                                  '
+							+'</div>                                                                    ';
+				 });
+				 $("#content").append(html);
+		   } else if(result.code == 401){
+			  window.location.href = "#!/login.html"; 
+		   } else {
+			  notice(result.message);
+		   }			   
+		},true);
+   }
+   
+    /**
+     * 获取用户信息
+	 */
+   function getMessage() {
+        var pageNo = 1, pageSize = 10;
+		_get(Interf.getMessage,{pageNo:pageNo,pageSize:pageSize},function(result){
+		   if(result.code == 200){
+				 var html = "";
+				 $.each(result.data,function (i,j) {
+					html +=	'<div class="sms-div">                                                   '
+							+'	<div class="sms-title">                                                 '
+							+'		'+j.title+'                                                            '
+							+'		<div class="sms-time">                                              '
+							+'			'+j.createTime+'                                                     '
+							+'		</div>                                                              '
+							+'	</div>                                                                  '
+							+'	<div class="sms-content">                                               '
+							+'		'+j.content+''
+							+'	</div>                                                                  '
+							//+'	<div class="sms-detail">                                                '
+							//+'		<a href="#!/notice_info.html?id='+j.id+'" style="text-decoration:none;color:#777">查看详情 </a>              '
+							//+'	</div>                                                                  '
+							+'</div>                                                                    ';
+				 });
+				 $("#content").append(html);
+		   } else if(result.code == 401){
+			  window.location.href = "#!/login.html"; 
+		   } else {
+			  notice(result.message);
+		   }			   
+		},true);
+   }   
+   
+   var type = 1;
+   /**
+     * 获取用户信息
+	 */
+   function userInfo(obj) {
+      if (type == 2){
+	     return;
+	  }	  
+	  type = 2;
+	  $("#content").html("");
+      $("#noticeInfo").removeClass("selected");
+	  $("#userInfo").addClass("selected");
+	  getMessage();
+   }
+   
+    /**
+     * 获取公告信息
+	 */
+   function noticeInfo(obj) {
+      if (type == 1){
+	     return;
+	  }	  
+	  type = 1;
+	  $("#content").html("");
+      $("#noticeInfo").addClass("selected");
+	  $("#userInfo").removeClass("selected");
+	  getNotice();
+   }
+   
+   /**
+     * 跳转
+	 */
+   function goUrl (id) {
+       noticeId = id;
+       window.location.href = "#!/notice_info.html"; 
+   }
+
+</script>
