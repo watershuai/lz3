@@ -79,7 +79,8 @@ var Interf = {
   getMyAddress: url + "xingzhexqUserAddress/getAllByUserId", //获取用户所有地址
   getUserScoreRecord: url + "xingzhexqUserScoreLog/page", //获取用户积分记录
   getMyPointPlan: url + "xingzhexqUserMill/getMyPointPlan", //获取用户加入得积分计划
-  updateMyMoney: url + "xingzhexqUserMill/updateMyMoney" //更新用户已收取蓝钻量
+  updateMyMoney: url + "xingzhexqUserMill/updateMyMoney", //更新用户已收取蓝钻量
+  getUserMoneyTr: url + "xingzhexqUser/getUserMoney"
 };
 
 var shopUrls = {

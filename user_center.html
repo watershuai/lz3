@@ -312,9 +312,9 @@
             }
         });
     }
-    _get(Interf.getUser, {}, function (result) {
-        if (result.data.money > 0) {
-            $("#money").html(changeTwoDecimal_f(result.data.money));
+    _get(Interf.getUserMoneyTr, {}, function (result) {
+        if (result.data > 0) {
+            $("#money").html(changeTwoDecimal_f(result.data));
         }
     })
 </script>

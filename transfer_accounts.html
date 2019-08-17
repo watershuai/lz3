@@ -158,10 +158,10 @@
             }
         });
     }
-    _get(Interf.getUser, {}, function (result) {
+    _get(Interf.getUserMoneyTr, {}, function (result) {
         if (result.code == 200) {
-            if (result.data.score > 0) {
-                $("#money").html(changeTwoDecimal_f(result.data.money));
+            if (result.data > 0) {
+                $("#money").html(changeTwoDecimal_f(result.data));
             }
         } else if (result.code == 401) {
             window.location.href = "#!/login.html";
@@ -231,7 +231,7 @@
                 var data = {
                     //walletAddress: $("#walletAddress").val(),
                     outMonery: $("#outMoney").val(),
-                    payType: "2",
+                    payType: "1",
                     userType: val2,
                     payPassword: pwd
                 }
