@@ -57,8 +57,12 @@
 					$('#onePage').find('div[data-content]').html(data) ;
 				}
 			});
-			
-			window.location.href = "#!/home.html";
+            if (inviteCode == null || inviteCode == '') {
+                window.location.href = "#!/home.html";
+            }else {
+                window.location.href = "#!/register.html";
+			}
+
 			
 			/*if(null == lognId){
 				window.location.href = "#!/login.html"; 
