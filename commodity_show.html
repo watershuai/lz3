@@ -128,7 +128,7 @@
     }
 
 
-    var integral = parseFloat(intention * 0.9);
+    var integral = changeTwoDecimal_f(parseFloat(intention * 0.9));
     if (intention == 0) {
       integral = 0
     }
@@ -204,10 +204,11 @@
       price: unitprice, //单价
       itemNum: num, //数量
       totalMoney: total, //总额
-      sendScore: Math.ceil(integral), //赠送积分
+      sendScore: integral, //赠送积分
       //sendScore: integral.toFixed(2),  //赠送积分
       payType:1,
       userCord:localStorage.getItem("pic")
+
     }
     console.log(param)
     // _post(shopUrls.bus_entry, param, function (result) {
