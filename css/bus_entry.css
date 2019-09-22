@@ -2,7 +2,7 @@
 input::-webkit-input-placeholder {
   color: #999;
 }
-.entry-container {
+. {
 
   height: calc(100% - 4rem);
   height: -webkit-calc(100% - 4rem);
@@ -13,7 +13,7 @@ input::-webkit-input-placeholder {
   padding-top: 0rem;
 }
 
-.entry-container form {
+.form6 {
   margin: 0;
   padding: 0;
   width: calc(100% - 1rem);
@@ -21,11 +21,11 @@ input::-webkit-input-placeholder {
   width: -webkit-calc(100% - 1rem);
   padding-left: 1rem;
   background-color: #FFFFFF;
-  margin-top: 0.6rem;
+  margin-top: -3.4rem;
   margin-bottom: 1rem;
 }
 
-.entry-container .menu {
+.menu {
   margin: 0;
   padding: 0;
   width: calc(100% - 1rem);
@@ -35,7 +35,7 @@ input::-webkit-input-placeholder {
   margin-top: 3.6rem;
 }
 
-.entry-container .menu .item {
+.menu .item {
   list-style: none;
   background-color: #FFFFFF;
   height: 4rem;
@@ -50,17 +50,17 @@ input::-webkit-input-placeholder {
   display: flex;
 }
 
-.entry-container .menu .item .name {
+.menu .item .name {
   flex: 0 0 6rem;
   text-align: left;
 }
 
-.entry-container .menu .item .text {
+.menu .item .text {
   flex: 1;
   width: 100%;
 }
 
-.entry-container .menu .item .text input {
+.menu .item .text input {
   display: block;
   width: 100%;
   height: 100%;
@@ -75,7 +75,7 @@ input::-webkit-input-placeholder {
   box-sizing: border-box;
 }
 
-.entry-container .menu .item.other {
+.menu .item.other {
   display: inline-block;
   height: auto;
   width: 100%;
@@ -83,11 +83,11 @@ input::-webkit-input-placeholder {
   overflow: hidden;
 }
 
-.entry-container .menu .item.other .name {
+.menu .item.other .name {
   width: 8rem;
 }
 
-.entry-container .menu .item.other textarea {
+.menu .item.other textarea {
   resize: none;
   outline: none;
   border: none;
@@ -108,7 +108,7 @@ input::-webkit-input-placeholder {
   border-bottom: none;
 }
 
-.entry-container .btn {
+.btn {
   width: 90%;
   margin: 3rem auto;
   background-color: #ED5B4E;
@@ -119,19 +119,19 @@ input::-webkit-input-placeholder {
   border-radius: 2rem;
 }
 
-.entry-container .menu .item .up_img {
+.menu .item .up_img {
   width: 10rem;
   height: 10rem;
   margin: 0 auto;
 }
 
-.entry-container .menu .item .up_img .show-img {
+.menu .item .up_img .show-img {
   display: block;
   width: 100%;
   height: 100%;
 }
 
-.entry-container .menu .item .up_img.default {
+ .menu .item .up_img.default {
   border: 1px dashed #e1e1e1;
 }
 .head22{
