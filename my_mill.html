@@ -17,36 +17,12 @@
                         <p class="item-title" style="font-size: 1.0rem;">{{mill.createTime | formatDate}} 到 {{mill.expireTime | formatDate}}</p>
                         <p class="item-title" style="font-size: 1.0rem;">领取：{{mill.dayGet}}天，已领钻：{{mill.alreadyMoney}}，剩余：{{mill.notalreadyMoney}}</p>
                         <p class="item-price  kuang-price">
-                            {{mill.runTime}}天产出<span class="item-price-num">{{mill.xingzhexqMoney}}</span>钻
-                        </p>
-                        <p v-if="mill.isDayGet==1" class=""><a style="text-decoration: none;
-                            text-align: center;
-                            background-color: #E64340;
-                            color: #FFFFFF;
-                            border: 1px solid #E64340;
-                            padding: 0rem 1rem;
-                            border-radius: 1rem;
-                            position: absolute;
-                            top: 5.5rem;
-                            right: 1rem;
-                            height: 2rem;
-                            line-height: 2rem;
-                            width: 5rem;"  v-bind:id="mill.id" href="javascript:;" onclick="dayget(this)">领取当天</a>
-
-                        </p>
-                        <p v-if="mill.isDayGet==2"class=""><a style="text-decoration: none;
-                            text-align: center;
-                            background-color: #E64340;
-                            color: #FFFFFF;
-                            border: 1px solid #E64340;
-                            padding: 0rem 1rem;
-                            border-radius: 1rem;
-                            position: absolute;
-                            top: 5.5rem;
-                            right: 1rem;
-                            height: 2rem;
-                            line-height: 2rem;
-                            width: 5rem;"   href="javascript:;" >已领取</a>
+                            {{mill.runTime}}天产出<span class="item-price-num">{{mill.xingzhexqMoney}}</span>钻<span v-if="mill.isDayGet==1" >
+                            <a class="lingqu"  v-bind:id="mill.id" href="javascript:;" onclick="dayget(this)">领取当天</a>
+                            </span>
+                            <span v-if="mill.isDayGet==2">
+                            <a class="lingqu" href="javascript:;" >已领取</a>
+                            </span>
 
                         </p>
                     </div>

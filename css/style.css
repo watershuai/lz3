@@ -2338,7 +2338,7 @@ input:-ms-input-placeholder {
   list-style: none;
   background-color: #FFFFFF;
   margin-bottom: 0.5rem;
-  height: 8.5rem;
+  height: 10rem;
 }
 
 .plan-item-list li:after {
@@ -2382,9 +2382,24 @@ input:-ms-input-placeholder {
   color: #666666;
   font-size: 1.1rem;
   font-weight: bold;
-  position: absolute;
+  /*position: absolute;*/
   bottom: 1rem;
 }
+.lingqu{
+  text-decoration: none;
+  text-align: center;
+  background-color: #E64340;
+  color: #FFFFFF;
+  border: 1px solid #E64340;
+  padding: 0rem 1rem;
+  border-radius: 1rem;
+  right: 1rem;
+  height: 2rem;
+  float: right;
+  line-height: 2rem;
+  width: 5rem;
+}
+
 
 .plan-item-list li .item-info .item-price .item-price-num {
   font-size: 1.5rem;
