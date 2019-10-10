@@ -3302,3 +3302,12 @@ input:-ms-input-placeholder {
   margin-top: 0;
   text-align: left;
 }
+.proxyOrder1{
+  text-align: left;
+  color: green
+}
+.proxyOrder2{
+  text-align: right;
+  float: right;
+  margin-right: 2.5rem;
+}

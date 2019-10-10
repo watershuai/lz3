@@ -95,6 +95,7 @@ var shopUrls = {
   cogOrderStatusAlipay: shop_url + "shopOrder/cogOrderStatusAlipay", //支付宝支付
   getMyByOrderStatus: shop_url + "shopOrder/getMyByOrderStatus", //根据订单状态查询用户的订单
   getMyByOrderProxy: shop_url + "shopOrder/getMyByOrderProxy", //根据订单状态查询代理商的订单
+  getMyByShopProxy: url + "xingzhexqUser/getShopListXX", //根据订单状态查询代理商商家的订单
   getMyAllByOrderStatus: shop_url + "shopOrder/getMyAllByOrderStatus", //根据订单状态查询用户的订单统计
   confirmGoods: shop_url + "shopOrder/confirmGoods", //确认收货
   // 新添加
