@@ -37,7 +37,6 @@
     <script src="./revise_loginPsw_files/jquery-3.1.1.min.js.下载"></script>
     <script type="text/javascript" src="./revise_loginPsw_files/artDialog.js.下载"></script>
     <script type="text/javascript" src="./revise_loginPsw_files/way.min.js.下载"></script>
-    <script type="text/javascript" src="./revise_loginPsw_files/common.js.下载"></script>
     <script src="./revise_loginPsw_files/require.js.下载" data-main="/Template/Mobile/js/main"></script>
     <link rel="stylesheet" href="./revise_loginPsw_files/userHome.css">
     <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="main"
@@ -60,6 +59,9 @@
             src="./revise_loginPsw_files/clipboard.min.js.下载"></script>
     <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="zclip"
             src="./revise_loginPsw_files/jquery.zclip.min.js.下载"></script>
+    <script>
+        document.write("<script type='text/javascript' src='./js/common.js?time="+Math.random()+"'></"+"script"+">")
+    </script>
 </head>
 
 
@@ -76,9 +78,15 @@
 </header>
 
 <div class="bank_recharge">
-    <form action="http://m.fh688888.com/Member.update_pass.do" class="update_form" method="post">
+    <form  class="update_form" >
         <input type="hidden" name="settype" value="2">
         <ul class="bank_form_list">
+            <li class="am-cf">
+                <span class="bank_form_left am-fl">原密碼</span>
+                <div class="am-fr bank_right_input">
+                    <input type="password" name="old_pa1" class="input_txt" placeholder="請輸入原密碼">
+                </div>
+            </li>
             <li class="am-cf">
                 <span class="bank_form_left am-fl">登錄密碼</span>
                 <div class="am-fr bank_right_input">
@@ -92,14 +100,14 @@
                 </div>
             </li>
         </ul>
-        <button class="am-btn am-btn-danger am-radius am-btn-block" type="submit">確定</button>
+        <button class="am-btn am-btn-danger am-radius am-btn-block" onclick="login()">確定</button>
     </form>
 </div>
 <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default bottom_navbar am-no-layout">
     <ul class="am-navbar-nav am-cf am-avg-sm-5">
         <li>
             <!--            <a href="/" class="bottom_navbar_list">-->
-            <a href="http://m.fh688888.com/Index.index.do" class="bottom_navbar_list active">
+            <a href="http://m.fh688888.com/Index.index.do" class="bottom_navbar_list">
                 <i class="iconfont icon-shouyeshouye1"></i>
                 <span class="am-navbar-label">首  頁</span>
             </a>
@@ -143,7 +151,7 @@
         </li>
          -->
         <li>
-            <a href="http://m.fh688888.com/Index.user.do" class="bottom_navbar_list">
+            <a href="http://m.fh688888.com/Index.user.do" class="bottom_navbar_list active">
                 <i class="iconfont icon-wode"></i>
                 <span class="am-navbar-label">我的賬戶</span>
             </a>
@@ -153,4 +161,34 @@
 
 <div class="y_is_last"></div>
 </body>
+<script>
+    function login() {
+        var old_pa1 = $("input[name='old_pa1']").val();
+        var mobile = $("input[name='pa1']").val();
+        var password = $("input[name='password']").val();
+        if (mobile == null || mobile == '') {
+            notice("手机号不能为空!");
+            return;
+        }
+        if (password == null || password == '') {
+            notice("密码不能为空!");
+            return;
+        }
+        var data = {
+            __ajax:"json",
+            mobile:mobile,
+            password:password,
+            isNewRecord:"true"
+        }
+        _post(Interf.login,data,function(result){
+            if(result.code == 200){
+                localStorage.setItem("token", result.data);
+                window.location.href = "#!/user_center.html";
+            } else{
+                notice(result.message);
+            }
+        },true);
+
+    }
+</script>
 </html>

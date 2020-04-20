@@ -9,22 +9,22 @@ var jqueryGridPage = 1;
 var jqueryGridRows = 10;
 var webheadertitle = '';
 $(function(){
-	$.init();
-	//getLottery();
-	checkislogin();
-	//tab切换
-	function tabs(tabTit,on,tabCon){
-      $(tabCon).each(function(){
-        $(this).children().eq(0).addClass(on).show();
-    });
-       $(tabTit).children().click(function(){
-          $(this).addClass(on).siblings().removeClass(on);
-           var index = $(tabTit).children().index(this);
-           $(tabCon).children().eq(index).show().siblings().hide();
-      });
-       }
+    $.init();
+    //getLottery();
+    //checkislogin();
+    //tab切换
+    function tabs(tabTit,on,tabCon){
+        $(tabCon).each(function(){
+            $(this).children().eq(0).addClass(on).show();
+        });
+        $(tabTit).children().click(function(){
+            $(this).addClass(on).siblings().removeClass(on);
+            var index = $(tabTit).children().index(this);
+            $(tabCon).children().eq(index).show().siblings().hide();
+        });
+    }
     tabs(".tabHd","cur",".tabBd");
-	
+
 });
 var WebConfigs
 /*
