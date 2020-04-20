@@ -1,73 +1,186 @@
-<div class="head">
-	<a href="#!/user_center.html" class="back-btn">
-		<img src="img/left.png" />
-	</a>
-	支付信息
-</div>
-<div class="containe-h">
-	<input type="hidden" id="outTradeNo" value="${outTradeNo}"/>
-	<div class="order-success">
-		<img src="img/order_success.png" />
-		<h3 id="paystatus"></h3>
-		<p  id="paystatusadd" ></p>
-	</div>
-	<div class="order-success-info">
-		<h3>订单信息</h3>
-		<p>订单号码<span id="orderNo">00000000000000</span></p>
-		<p>下单时间<span id="orderTime">1999-12-31  00:00:00</span></p>
-		<p>商户名称<span>蓝钻网</span></p>
-	</div>
-</div>
-<script>
-	$(function(){
-		getOrderInfo();
-		/*//查询订单状态
-        $.confirm("是否成功支付订单？", function () {
-            //设置成功付款状态
-            _post(shopUrls.workcogOrderStatus, {id: result.data.id, orderStatus: 1}, function (result1) {
-                if (result1.code == 200) {
-                    orderId = result1.data.id;
-                    window.location.href = "#!/shop/order_success.html";
-                } else if (result1.code == 401) {
-                    window.location.href = "#!/login.html";
-                } else {
-                    notice(result1.message);
-                }
-            }, true);
-        }, function () {
-            _post(shopUrls.workcogOrderStatus, {id: result.data.id, orderStatus: 1}, function (result1) {
-                if (result1.code == 200) {
-                    orderId = result1.data.id;
-                    window.location.href = "#!/user_center.html";
-                } else if (result1.code == 401) {
-                    window.location.href = "#!/login.html";
-                } else {
-                    notice(result1.message);
-                }
-            }, true);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1,user-scalable=no">
+	<title>蓝钻网</title>
+	<link rel="stylesheet" href="css/style.css?v20191004" />
+	<link rel="stylesheet" href="css/dialog.css?v20191004" />
+	<link rel="stylesheet" href="css/zhifu.css?v20191004">
+	<link rel="stylesheet" href="css/jquery-weui.min.css?v20191004" />
+	<link rel="stylesheet" href="css/weui.min.css?v20191004" />
+	<script type="text/javascript" src="js/jquery.min.js?v20191007"></script>
+	<script type="text/javascript" src="js/jquery.ba-hashchange.js?v20191007" ></script>
+	<script type="text/javascript" src="js/onePage.js?v20191007" ></script>
+	<script type="text/javascript" src="js/clipboard.min.js?v20191007" ></script>
+	<script type="text/javascript" src="js/dialog.min.js?v20191007" ></script>
+	<script type="text/javascript" src="js/common.js?v20191007" ></script>
+	<script type="text/javascript" src="js/jquery.md5.js?v20191007" ></script>
+	<script type="text/javascript" src="js/jquery-weui.min.js?v20191007" ></script>
+	<script type="text/javascript" src="js/city-picker.min.js?v20191007" ></script>
+	<script type="text/javascript" src="js/iscroll.js?v20191007" ></script>
+	<script type="text/javascript" src="js/fastclick.js?v20191007" ></script>
+	<script type="text/javascript" src="js/swiper.min.js?v20191007" ></script>
 
-        });*/
-	});
-	
-	function getOrderInfo(){
-         var orderId=$("#outTradeNo").val();
-   		var data = {id:orderId};
-	   	_get(shopUrls.getOrderInfo,data,function(result){
-		   if(result.code == 200){
-		   		$("#orderNo").html(result.data.orderNo);
-		   		$("#orderTime").html(result.data.orderTime);
-		   		if (result.data.orderStatus=1) {
-                    $("#paystatus").html("支付成功");
-                    $("#paystatusadd").html("您已支付成功，请耐心等待发货");
-				}else if (result.data.orderStatus=0) {
-                    $("#paystatus").html("支付失败");
-                    $("#paystatusadd").html("您已支付失败，请重新购买");
-				}
-		   } else if(result.code == 401){
-			  window.location.href = "#!/login.html"; 
-		   } else {
-			  notice(result.message);
-		   }			   
-		});
-   }
-</script>
+	<!--
+        作者：lizhaowen
+        时间：2018-11-24
+        描述：上拉加载，下拉刷新插件
+    -->
+	<link rel="stylesheet" href="lib/minirefresh-2.0.1/minirefresh.css" />
+	<link rel="stylesheet" href="lib/minirefresh-2.0.1/themes/applet/minirefresh.theme.applet.css" />
+	<script type="text/javascript" src="lib/minirefresh-2.0.1/minirefresh.js"></script>
+	<script type="text/javascript" src="lib/minirefresh-2.0.1/themes/applet/minirefresh.theme.applet.js"></script>
+
+	<!--
+        作者：wangcw
+        时间：2018-12-11
+        描述：时间格式化插件 Vue
+    -->
+	<script type="text/javascript" src="js/dateformat-min.js?20181213" ></script>
+	<script type="text/javascript" src="js/vue.min.js" ></script>
+	<script type="text/javascript" src="js/userCenter.js?t=20191004"></script>
+
+	<!--<script>
+        inviteCode = GetQueryString("inviteCode");
+        var lognId = GetQueryString("id");
+        $(function(){
+            FastClick.attach(document.body);
+
+            $('#onePage').onePage({
+                //dUrl : serverUrl + '/APP/', //这里需要填写你的域名(*必填项)
+                goHome : function(){
+                    //这里需要自己配置一下首页要执行的内容
+                    $('#onePage').find('div[data-content]').html($("#login-body").html()) ;//
+                } ,
+                callBack : function(data){
+                    //这里是 DOM 操作区域，可以自己定义修改，这里只是 demo
+                    $('#onePage').find('div[data-content]').html(data) ;
+                }
+            });
+            if (inviteCode == null || inviteCode == '') {
+                window.location.href = "#!/home.html";
+            }else {
+                window.location.href = "#!/register.html";
+            }
+
+
+            /*if(null == lognId){
+                window.location.href = "#!/login.html";
+            }else{
+                localStorage.setItem("token", lognId);
+                window.location.href = "#!/user_center.html";
+            }*/
+        });
+    </script>-->
+</head>
+<body>
+<div id="onePage">
+	<div class="main-containe" data-content>
+		<div class="head">
+			<a href="#!/user_center.html" class="back-btn">
+				<img src="img/left.png" />
+			</a>
+			支付信息
+		</div>
+		<div class="containe-h">
+			<input type="hidden" id="outTradeNo" value="${outTradeNo}"/>
+			<div class="order-success">
+				<img src="img/order_success.png" />
+				<h3 id="paystatus"></h3>
+				<p  id="paystatusadd" ></p>
+			</div>
+			<div class="order-success-info">
+				<h3>订单信息</h3>
+				<!--<p>商品名称<span id="ordernaem"></span></p>-->
+				<p>订单号码<span id="orderNo">00000000000000</span></p>
+				<p>下单时间<span id="orderTime">1999-12-31  00:00:00</span></p>
+				<p>商户名称<span>蓝钻网</span></p>
+			</div>
+		</div>
+		<script>
+            $(function(){
+                getOrderInfo();
+                /*//查询订单状态
+                $.confirm("是否成功支付订单？", function () {
+                    //设置成功付款状态
+                    _post(shopUrls.workcogOrderStatus, {id: result.data.id, orderStatus: 1}, function (result1) {
+                        if (result1.code == 200) {
+                            orderId = result1.data.id;
+                            window.location.href = "#!/shop/order_success.html";
+                        } else if (result1.code == 401) {
+                            window.location.href = "#!/login.html";
+                        } else {
+                            notice(result1.message);
+                        }
+                    }, true);
+                }, function () {
+                    _post(shopUrls.workcogOrderStatus, {id: result.data.id, orderStatus: 1}, function (result1) {
+                        if (result1.code == 200) {
+                            orderId = result1.data.id;
+                            window.location.href = "#!/user_center.html";
+                        } else if (result1.code == 401) {
+                            window.location.href = "#!/login.html";
+                        } else {
+                            notice(result1.message);
+                        }
+                    }, true);
+
+                });*/
+            });
+
+            function getOrderInfo(){
+
+                // console.log(getParam());
+                var Param=getParam();
+                // var orderId=$("#outTradeNo").val();
+                var data = {id:Param.outTradeNo};
+                _get(shopUrls.getOrderInfo,data,function(result){
+                    if(result.code == 200){
+                        $("#orderNo").html(result.data.orderNo);
+                        $("#orderTime").html(result.data.orderTime);
+                        // $("#ordernaem").html(result.data.itemName);
+                        if (result.data.orderStatus=1) {
+                            $("#paystatus").html("支付成功");
+                            $("#paystatusadd").html("您已支付成功，请耐心等待发货");
+                        }else if (result.data.orderStatus=0) {
+                            $("#paystatus").html("支付失败");
+                            $("#paystatusadd").html("您已支付失败，请重新购买");
+                        }
+                    } else if(result.code == 401){
+                        window.location.href = "#!/login.html";
+                    } else {
+                        notice(result.message);
+                    }
+                });
+            }
+            /**
+             * 获取参数的键值对对象。
+             * @returns {Object}
+             */
+            function getParam () {
+                try{
+                    var url = window.location.href;
+                    var result = url.split("?")[1];
+                    var keyValue = result.split("&");
+                    var obj = {};
+                    for (var i = 0; i < keyValue.length; i++) {
+                        var item = keyValue[i].split("=");
+                        obj[item[0]] = item[1];
+                    }
+                    return obj;
+                }catch(e){
+                    console.warn("There has no param value!");
+                }
+            };
+            /**
+             * 页面加载完毕打印键值对对象
+             */
+            // window.onload = function () {
+            //
+            // }
+		</script>
+	</div>
+</div>
+</body>
+</html>
