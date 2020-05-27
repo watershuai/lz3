@@ -40,14 +40,14 @@
 	<script type="text/javascript" src="js/dateformat-min.js?20181213" ></script>
 	<script type="text/javascript" src="js/vue.min.js" ></script>
 
-	<script>
+	<!--<script>
 	    inviteCode = GetQueryString("inviteCode");
 	    var lognId = GetQueryString("id");
 		$(function(){
 			FastClick.attach(document.body);
 			
 			$('#onePage').onePage({
-				dUrl : serverUrl + '/APP/', //这里需要填写你的域名(*必填项)
+				//dUrl : serverUrl + '/APP/', //这里需要填写你的域名(*必填项)
 				goHome : function(){
 					//这里需要自己配置一下首页要执行的内容
 					$('#onePage').find('div[data-content]').html($("#login-body").html()) ;//
@@ -71,11 +71,282 @@
 				window.location.href = "#!/user_center.html"; 
 			}*/
 		});
-	</script>
+	</script>-->
 </head>
 <body>
     <div id="onePage">
         <div class="main-containe" data-content>
+			<div class="containe">
+				<div class="weui-search-bar" id="searchBar">
+					<form class="weui-search-bar__form">
+						<div class="weui-search-bar__box">
+							<i class="weui-icon-search"></i>
+							<input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+							<a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+						</div>
+						<label class="weui-search-bar__label" id="searchText">
+							<i class="weui-icon-search"></i>
+							<span>搜索</span>
+						</label>
+					</form>
+					<a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+				</div>
+				<div class="swiper-container swiper-banner">
+					<!--图片-->
+					<div class="swiper-wrapper">
+						<div class="swiper-slide"><img src="img/banner/banner1.jpg"></div>
+						<div class="swiper-slide"><img src="img/banner/banner2.jpg"></div>
+						<div class="swiper-slide"><img src="img/banner/banner3.jpg"></div>
+					</div>
+					<!--分页器-->
+					<div class="swiper-pagination swiper-pagination-bullets"></div>
+				</div>
+
+				<div class="home-notice" onclick="showNoticeInfo(this)" data-id="">
+					<img src="img/icon/notice.png" />
+					<span class="notice-content" id="noticeContent"></span>
+				</div>
+
+				<div class="grid-menu">
+					<a href="#!/score_shop.html">
+						<li>
+							<img src="img/icon/icon1.png" />
+							<p>积分计划</p>
+						</li>
+					</a>
+					<!--<a href="#!/user_index.html">-->
+					<a href="#!/shop_show.html">
+						<li>
+							<img src="img/icon/icon2.png" />
+							<p>商家店铺</p>
+						</li>
+					</a>
+					<a href="#!/shop/shop_index_diamond.html">
+						<li>
+							<img src="img/icon/icon3.png" />
+							<p>蓝钻商城</p>
+						</li>
+					</a>
+					<a href="#!/new_user_handbook.html">
+						<li>
+							<img src="img/icon/icon4.png" />
+							<p>新手指南</p>
+						</li>
+					</a>
+				</div>
+
+
+				<div class="home_shop_show">
+					<p class="show_show_desc"><img src="img/icon/tuijian.png" />商家推荐</p>
+					<ul class="shop_list">
+					</ul>
+				</div>
+				<!--<div>
+                      <img src="img/banner/banner5.png" width="100%" />
+                  </div>-->
+
+
+				<div class="item-title-div">
+					<img src="img/icon/tuijian.png" />
+					爆款推荐
+				</div>
+				<ul class="item-list" id="itemList">
+					<!--<li>
+                            <div class="item-pic">
+                                <img src="img/item/item1.jpg" />
+                            </div>
+                            <div class="item-info">
+                                <p class="item-title">大号合金拖马斯小火车套装轨道惯性电动汽车男孩玩具</p>
+                                <p class="item-price">¥
+                                    <span class="item-price-num">10000.00</span>
+                                    <span class="item-score">送10000积分</span>
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-pic">
+                                <img src="img/item/item2.jpg" />
+                            </div>
+                            <div class="item-info">
+                                <p class="item-title">上汽大众全新途观L 99元抵6000 整车新车汽车礼包</p>
+                                <p class="item-price">¥
+                                    <span class="item-price-num">1000.00</span>
+                                    <span class="item-score">送1000积分</span>
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-pic">
+                                <img src="img/item/item3.jpg" />
+                            </div>
+                            <div class="item-info">
+                                <p class="item-title">上汽大众全新途观L 99元抵6000 整车新车汽车礼包</p>
+                                <p class="item-price">¥
+                                    <span class="item-price-num">1000.00</span>
+                                    <span class="item-score">送1000积分</span>
+                                </p>
+                            </div>
+                        </li>-->
+				</ul>
+			</div>
+			<ul class="bottom-nav">
+				<a href="#!/home.html">
+					<li class="active">
+						<img src="img/icon/homefill.png" />
+						<p>首页</p>
+					</li>
+				</a>
+				<a href="#!/shop/shop_index.html">
+					<li>
+						<img src="img/icon/shop.png" />
+						<p>商城</p>
+					</li>
+				</a>
+				<a href="#!/my_message.html">
+					<li>
+						<img src="img/icon/mark.png" />
+						<p>消息</p>
+					</li>
+				</a>
+				<a href="#!/user_center.html">
+					<li>
+						<img src="img/icon/my_light.png" />
+						<p>我的</p>
+					</li>
+				</a>
+			</ul>
+			<script>
+                $(function () {
+                    //导航图初始化
+                    new Swiper('.swiper-banner', {
+                        pagination: {
+                            el: '.swiper-pagination'
+                        },
+                        autoplay: true
+                    });
+
+                    getZdShopItemInfoItem();
+                    getNotice();
+                    getList()
+                });
+
+                function afterAddRes() {
+                    const lis = $(".shop_list li")
+                    for (let i = 0; i<lis.length; i++){
+                        lis.eq(i).click(function () {
+                            const hrefVal =  `/index.html#!/shop_detail.html?id=${lis.eq(i).attr('id')}`
+                            window.location.href = hrefVal
+                        })
+                    }
+                }
+
+                function getList(pageNo) {
+                    if (pageNo === undefined) {
+                        pageNo = 1 //默认pageNo 显示第一页
+                    }
+                    _post(shopUrls.bus_search, {
+                        status: 1,
+                        pageNo: pageNo,
+                        pageSize: 4,
+                        isShow: 1
+                    }, function (result) {
+                        if (result.dataList.list.length == 0) {
+                            $(".shop_list li").remove();
+                            $(".um-content").addClass('hide')
+                            $(".pagin").addClass('hide')
+                            $('.hint').removeClass('hide')
+                        } else {
+                            var html = "";
+                            // let arr = [...result.dataList.list,...result.dataList.list]
+                            $.each(result.dataList.list, function (i, j) {
+                                html += `<li id="${j.id}">
+                    <div class="shop-pic">
+                      <img src="http://47.102.197.243/ADMIN-789/${j.picUrl1}">
+                    </div>
+                    <div class="shop-info">
+                      <p class="shop-name" >${j.shopName}</p>
+                      <p class="shop-address">
+                        <span class="shop-address-name">地址：</span>
+                        <span class="shop-address-val">${j.province + j.city+j.area}</span>
+                      </p>
+                    </div>
+                  </li>`
+                            })
+                            $('.home_shop_show .shop_list').html(html)
+                            afterAddRes()
+                        }
+                    })
+                }
+
+                /**
+                 * 获取公告信息
+                 */
+                function getNotice() {
+                    var pageNo = 1,
+                        pageSize = 1;
+                    _get(Interf.getNotice, {
+                        pageNo: pageNo,
+                        pageSize: pageSize
+                    }, function (result) {
+                        if (result.code == 200) {
+                            var html = "";
+                            $.each(result.data, function (i, j) {
+                                $("#noticeContent").html(j.content);
+                                $("#noticeContent").parent().data("id", j.id);
+                            });
+                        } else if (result.code == 401) {
+                            window.location.href = "#!/login.html";
+                        } else {
+                            notice(result.message);
+                        }
+                    });
+                }
+
+                /**
+                 * 获取置顶的商品列表
+                 */
+                function getZdShopItemInfoItem() {
+                    _get(shopUrls.getZdShopItemInfoItem, {}, function (result) {
+                        if (result.code == 200) {
+                            var html = "";
+                            $.each(result.data, function (i, j) {
+                                html += '<li onclick="showShopItemInfo(this)" data-id="' + j.id + '">' +
+                                    '<div class="item-pic"><img src="' + serverUrl + j.mainPic + '" />' +
+                                    '</div><div class="item-info"><p class="item-title">' + j.name + '</p>';
+                                if (j.payType === 2) { //蓝钻
+                                    html +=
+                                        '<p class="item-price"><img src="img/zuan.png" style="width: 16px; height: 12px; padding-right: 1px;"/>' +
+                                        '<span class="item-price-num">' + changeTwoDecimal_f(j.price) + '</span>';
+                                } else {
+                                    html += '<p class="item-price">¥<span class="item-price-num">' + changeTwoDecimal_f(j.price) +
+                                        '</span>' +
+                                        '<span class="item-score">送' + j.score + '积分</span></p></div></li>';
+                                }
+
+                            });
+                            $("#itemList").append(html);
+                        } else if (result.code == 401) {
+                            window.location.href = "#!/login.html";
+                        } else {
+                            notice(result.message);
+                        }
+                    }, true);
+                }
+
+                //展示项品详情
+                function showShopItemInfo(obj) {
+                    itemInfoId = $(obj).data("id");
+                    window.location.href = "#!/shop/item_info.html";
+                }
+
+                /**
+                 * 查看公告详情
+                 */
+                function showNoticeInfo(obj) {
+                    noticeId = $(obj).data("id");
+                    window.location.href = "#!/notice_info.html";
+                }
+			</script>
         </div>
     </div>
 </body>
